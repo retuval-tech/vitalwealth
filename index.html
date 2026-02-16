@@ -58,7 +58,13 @@ button{font-family:var(--f);cursor:pointer}
 @keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes barFill{from{width:0}to{width:var(--fill)}}
-@keyframes notifSlide{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes notifSlide1{from{opacity:0;transform:translateX(40px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes notifSlide2{from{opacity:0;transform:translateX(-40px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes phonePulse{0%,100%{box-shadow:0 50px 120px rgba(0,0,0,.5),0 0 80px var(--ad)}50%{box-shadow:0 50px 120px rgba(0,0,0,.5),0 0 120px var(--ag)}}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes scoreReveal{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes glowPulse{0%,100%{opacity:.15}50%{opacity:.35}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -74,8 +80,10 @@ button{font-family:var(--f);cursor:pointer}
 .nav-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--sec));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:var(--bg)}
 .nav-br>span{font-weight:700;font-size:18px;letter-spacing:-.02em}
 .nav-lk{display:flex;align-items:center;gap:32px}
-.nav-lk a{font-size:14px;font-weight:500;color:var(--tx2);transition:color .25s;letter-spacing:.01em}
+.nav-lk a{font-size:14px;font-weight:500;color:var(--tx2);transition:color .25s;letter-spacing:.01em;position:relative}
+.nav-lk a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s;border-radius:1px}
 .nav-lk a:hover{color:var(--tx)}
+.nav-lk a:hover::after{width:100%}
 .nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:10px 24px;border-radius:9px;font-weight:600;font-size:14px;transition:all .3s;box-shadow:0 0 24px var(--accent-dim)}
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 32px var(--accent-glow)}
 .mob-tog{display:none;background:none;border:none;color:var(--tx);padding:4px}
@@ -93,13 +101,15 @@ button{font-family:var(--f);cursor:pointer}
 .h-o3{top:45%;left:45%;width:320px;height:320px;background:radial-gradient(circle,var(--warm-dim),transparent 70%);animation:float 13s ease-in-out infinite 4s}
 .h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:64px 64px;opacity:.35;mask-image:radial-gradient(ellipse 55% 55% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 55% 55% at 50% 50%,black,transparent)}
 .h-con{max-width:880px;text-align:center;position:relative;z-index:1}
-.h-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid rgba(0,229,160,.18);border-radius:100px;padding:7px 18px;margin-bottom:32px;font-size:13px;font-weight:500;color:var(--accent);animation:fadeUp .6s ease both}
+.h-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid rgba(0,229,160,.18);border-radius:100px;padding:7px 18px;margin-bottom:32px;font-size:13px;font-weight:500;color:var(--accent);animation:fadeUp .6s ease both,badgeFloat 3s ease-in-out infinite 1s}
 .h-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
 .h-title{font-size:clamp(38px,6.5vw,76px);font-weight:900;line-height:1.03;letter-spacing:-.04em;margin-bottom:24px;animation:fadeUp .7s ease both .12s}
-.h-grad{background:linear-gradient(135deg,var(--accent),var(--sec));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:gradShift 5s ease infinite}
+.h-grad{background:linear-gradient(135deg,var(--accent),#4aeadc,var(--sec),var(--accent));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradShift 6s ease infinite}
 .h-sub{font-size:clamp(16px,2vw,20px);color:var(--tx2);max-width:620px;margin:0 auto 40px;line-height:1.7;font-weight:300;animation:fadeUp .7s ease both .25s}
 .h-acts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease both .38s}
-.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:16px 36px;border-radius:12px;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:all .3s;box-shadow:0 0 40px var(--accent-dim)}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:16px 36px;border-radius:12px;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:all .3s;box-shadow:0 0 40px var(--accent-dim);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s}
+.btn-p:hover::before{left:100%}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 50px var(--accent-glow)}
 .btn-s{color:var(--tx2);padding:16px 28px;border-radius:12px;border:1px solid var(--bdl);font-weight:500;font-size:16px;display:inline-flex;align-items:center;gap:8px;transition:all .3s;background:rgba(255,255,255,.015)}
 .btn-s:hover{border-color:var(--accent);color:var(--tx)}
@@ -107,7 +117,8 @@ button{font-family:var(--f);cursor:pointer}
 /* ── PHONE ── */
 .ph-sec{display:flex;justify-content:center;padding:0 24px 40px;position:relative}
 .ph-wrap{position:relative;display:flex;justify-content:center;align-items:flex-start}
-.phone{width:310px;background:rgba(10,16,24,.92);border-radius:40px;border:1px solid var(--bdl);padding:14px;box-shadow:0 50px 120px rgba(0,0,0,.5),0 0 80px var(--accent-dim)}
+.phone{width:310px;background:rgba(10,16,24,.92);border-radius:40px;border:1px solid var(--bdl);padding:14px;animation:phonePulse 4s ease-in-out infinite;transition:transform .4s}
+.phone:hover{transform:scale(1.02)}
 .ph-scr{border-radius:28px;overflow:hidden;background:var(--bg);padding:18px}
 .ph-notch{width:80px;height:24px;background:#111;border-radius:0 0 14px 14px;margin:0 auto;position:relative;top:-18px;margin-bottom:-12px}
 .ph-stat{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:var(--tx3);margin-bottom:16px}
@@ -129,8 +140,8 @@ button{font-family:var(--f);cursor:pointer}
 .ph-ni{text-align:center;font-size:9px;font-weight:500}
 .ph-nic{width:18px;height:18px;margin:0 auto 3px;border-radius:4px}
 .ph-notif{position:absolute;padding:10px 16px;border-radius:12px;background:rgba(10,16,24,.9);border:1px solid var(--bdl);backdrop-filter:blur(12px);font-size:12px;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.3)}
-.ph-n1{top:60px;right:-160px;animation:notifSlide .6s ease both .8s}
-.ph-n2{top:140px;left:-170px;animation:notifSlide .6s ease both 1.2s}
+.ph-n1{top:60px;right:-160px;animation:notifSlide1 .7s cubic-bezier(.22,1,.36,1) both .8s}
+.ph-n2{top:140px;left:-170px;animation:notifSlide2 .7s cubic-bezier(.22,1,.36,1) both 1.3s}
 .ph-nt{font-weight:600;margin-bottom:2px}
 .ph-nx{color:var(--tx3);font-size:11px}
 @media(max-width:640px){.ph-notif{display:none}.phone{width:280px}}
@@ -153,8 +164,8 @@ button{font-family:var(--f);cursor:pointer}
 .ft-sec{max-width:var(--mw);margin:0 auto;padding:0 24px 120px}
 .ft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:24px;margin-top:64px}
 .ft-card{background:var(--bg-card);border:1px solid var(--bd);border-radius:20px;padding:32px;position:relative;overflow:hidden;transition:all .4s ease}
-.ft-card:hover{background:var(--bg-card-h);transform:translateY(-4px)}
-.ft-card:hover .ft-glow{opacity:.7}
+.ft-card:hover{background:var(--bg-card-h);transform:translateY(-6px);border-color:var(--bdl)}
+.ft-card:hover .ft-glow{opacity:.6}
 .ft-glow{position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;filter:blur(45px);opacity:.25;transition:opacity .4s;pointer-events:none}
 .ft-icon{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative}
 .ft-card h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px;position:relative}
@@ -198,8 +209,8 @@ button{font-family:var(--f);cursor:pointer}
 .cta-sec{max-width:920px;margin:0 auto;padding:0 24px 120px}
 .cta-box{text-align:center;padding:clamp(48px,6vw,72px) clamp(24px,4vw,48px);border-radius:var(--rl);position:relative;overflow:hidden;border:1px solid var(--bd)}
 .cta-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-dim),var(--sec-dim));opacity:.45}
-.cta-o1{position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:var(--accent-glow);filter:blur(80px)}
-.cta-o2{position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(99,102,241,.18);filter:blur(80px)}
+.cta-o1{position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:var(--accent-glow);filter:blur(80px);animation:float 8s ease-in-out infinite}
+.cta-o2{position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(99,102,241,.18);filter:blur(80px);animation:float 10s ease-in-out infinite 3s}
 .cta-con{position:relative;z-index:1}
 .cta-con h2{font-size:clamp(26px,4vw,42px);font-weight:900;letter-spacing:-.03em;margin-bottom:16px}
 .cta-con p{color:var(--tx2);font-size:17px;margin-bottom:32px;font-weight:300;max-width:500px;margin-left:auto;margin-right:auto}
@@ -226,7 +237,7 @@ button{font-family:var(--f);cursor:pointer}
 .m-box{position:relative;width:100%;background:var(--bg-el);border:1px solid var(--bdl);border-radius:var(--rl);padding:36px;animation:scaleIn .3s ease;box-shadow:0 50px 120px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
 .m-sm{max-width:460px}.m-lg{max-width:760px}
 .m-close{position:sticky;top:0;float:right;background:rgba(255,255,255,.05);border:none;color:var(--tx2);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2}
-.m-close:hover{background:rgba(255,255,255,.1);color:var(--tx)}
+.m-close:hover{background:rgba(255,255,255,.1);color:var(--tx);transform:rotate(90deg)}
 .m-title{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
 .m-sub{color:var(--tx2);font-size:14px;margin-bottom:28px;font-weight:300}
 
@@ -309,6 +320,7 @@ button{font-family:var(--f);cursor:pointer}
 <section class="hero">
   <div class="h-orb h-o1"></div><div class="h-orb h-o2"></div><div class="h-orb h-o3"></div>
   <div class="h-grid"></div>
+  <div id="particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
   <div class="h-con">
     <div class="h-badge"><span class="h-dot"></span>Now accepting early access signups</div>
     <h1 class="h-title">Your Wealth. Your Health.<br><span class="h-grad">One Platform.</span></h1>
@@ -327,33 +339,52 @@ button{font-family:var(--f);cursor:pointer}
     <div class="ph-notif ph-n2"><div class="ph-nt" style="color:var(--sec)">📈 ETH Price Alert</div><div class="ph-nx">Ethereum up 5.2% in the last hour</div></div>
     <div class="phone"><div class="ph-scr">
       <div class="ph-notch"></div>
-      <div class="ph-stat"><span>9:41</span><span>●●●●</span></div>
+      <div class="ph-stat"><span>9:41</span><span style="display:inline-flex;align-items:center"><span style="width:18px;height:9px;border:1.5px solid var(--tx3);border-radius:2px;position:relative;display:inline-block;padding:1px"><span style="display:block;width:75%;height:100%;background:var(--accent);border-radius:1px"></span></span></span></div>
+      <!-- Portfolio -->
       <div class="ph-card ph-port">
-        <div style="display:flex;justify-content:space-between;align-items:center"><div class="ph-lbl">Portfolio Value</div><div style="font-size:10px;color:var(--accent);font-weight:600;background:var(--accent-dim);padding:2px 8px;border-radius:100px">LIVE</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="ph-lbl">Portfolio Value</div><div style="display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);animation:livePulse 1.5s ease-in-out infinite"></span><span style="font-size:10px;color:var(--accent);font-weight:600;background:var(--accent-dim);padding:2px 8px;border-radius:100px">LIVE</span></div></div>
+        <div style="font-size:11px;color:var(--accent);font-weight:600;margin:3px 0"><span style="background:var(--accent-dim);padding:1px 6px;border-radius:4px">+12.4%</span></div>
         <div class="ph-val" data-count="247850" data-prefix="$">$0</div>
-        <div class="ph-chg">+12.4% ↑</div>
       </div>
+      <!-- Longevity — Enhanced with bio age -->
       <div class="ph-card ph-long">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="ph-lbl">Longevity Score</div><div style="font-size:10px;color:var(--sec);font-weight:600;background:var(--sec-dim);padding:2px 8px;border-radius:100px">Top 2%</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div class="ph-lbl">Longevity Score</div><div style="font-size:10px;color:var(--sec);font-weight:600;background:var(--sec-dim);padding:2px 8px;border-radius:100px">Top 2%</div></div>
         <div style="display:flex;align-items:baseline;gap:4px"><span class="ph-score" data-count="92">0</span><span class="ph-smax">/100</span></div>
+        <!-- Bio Age -->
+        <div style="display:flex;gap:8px;margin:10px 0;padding:8px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid var(--bd)">
+          <div style="flex:1;text-align:center"><div style="font-size:9px;color:var(--tx3)">Actual</div><div style="font-size:17px;font-weight:800">32</div></div>
+          <div style="flex:1;text-align:center"><div style="font-size:9px;color:var(--tx3)">Biological</div><div style="font-size:17px;font-weight:800;color:var(--accent)">28</div></div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center"><span style="font-size:12px;font-weight:700;color:var(--accent)">-4 years</span></div>
+        </div>
+        <!-- Metrics -->
         <div class="ph-mets">
-          <div class="ph-met"><div class="ph-ml">Cardio</div><div class="ph-mv">88</div><div class="ph-bar"><div class="ph-fill" style="--fill:88%;background:var(--sec)"></div></div></div>
-          <div class="ph-met"><div class="ph-ml">Recovery</div><div class="ph-mv">92</div><div class="ph-bar"><div class="ph-fill" style="--fill:92%;background:var(--accent)"></div></div></div>
-          <div class="ph-met"><div class="ph-ml">Activity</div><div class="ph-mv">85</div><div class="ph-bar"><div class="ph-fill" style="--fill:85%;background:var(--warm)"></div></div></div>
-          <div class="ph-met"><div class="ph-ml">Sleep</div><div class="ph-mv">94</div><div class="ph-bar"><div class="ph-fill" style="--fill:94%;background:var(--accent)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml" style="display:flex;justify-content:space-between">Cardio <span style="font-weight:600;color:var(--tx)">88</span></div><div class="ph-bar"><div class="ph-fill" style="--fill:88%;background:var(--sec)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml" style="display:flex;justify-content:space-between">Recovery <span style="font-weight:600;color:var(--tx)">92</span></div><div class="ph-bar"><div class="ph-fill" style="--fill:92%;background:var(--accent)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml" style="display:flex;justify-content:space-between">Activity <span style="font-weight:600;color:var(--tx)">85</span></div><div class="ph-bar"><div class="ph-fill" style="--fill:85%;background:var(--warm)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml" style="display:flex;justify-content:space-between">Sleep <span style="font-weight:600;color:var(--tx)">94</span></div><div class="ph-bar"><div class="ph-fill" style="--fill:94%;background:var(--accent)"></div></div></div>
+        </div>
+        <!-- Extra Stats -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+          <div style="background:rgba(255,255,255,.02);border-radius:8px;padding:5px;text-align:center"><div style="font-size:12px;font-weight:700;color:var(--accent)">+8.2 yrs</div><div style="font-size:8px;color:var(--tx3)">Healthspan</div></div>
+          <div style="background:rgba(255,255,255,.02);border-radius:8px;padding:5px;text-align:center"><div style="font-size:12px;font-weight:700;color:var(--accent)">42.5</div><div style="font-size:8px;color:var(--tx3)">VO2 Max</div></div>
+          <div style="background:rgba(255,255,255,.02);border-radius:8px;padding:5px;text-align:center"><div style="font-size:12px;font-weight:700;color:var(--accent)">65ms</div><div style="font-size:8px;color:var(--tx3)">HRV</div></div>
         </div>
       </div>
+      <!-- Insurance — Enhanced -->
       <div class="ph-card ph-ins">
+        <div style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:var(--accent);background:var(--accent-dim);padding:2px 8px;border-radius:100px;margin-bottom:6px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> DeFi Insurance · Verified</div>
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><div class="ph-lbl">DeFi Insurance</div><div style="font-size:20px;font-weight:800">$1.2M</div><div class="ph-lbl">Coverage</div></div>
-          <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--accent)">-22%</div><div class="ph-lbl">Premium Discount</div></div>
+          <div><div style="font-size:20px;font-weight:800">$1.2M</div><div class="ph-lbl">Coverage</div></div>
+          <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--accent)">-22%</div><div class="ph-lbl">Discount</div></div>
         </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);display:flex;gap:6px;font-size:9px;color:var(--tx3)"><span style="background:rgba(255,255,255,.03);padding:2px 7px;border-radius:5px">Protocol: Aave V3</span><span style="background:rgba(255,255,255,.03);padding:2px 7px;border-radius:5px">Stable: 99.9%</span></div>
       </div>
+      <!-- Nav with icons -->
       <div class="ph-nav">
-        <div class="ph-ni" style="color:var(--accent)"><div class="ph-nic" style="background:var(--accent-dim)"></div>Home</div>
-        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Wallet</div>
-        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Health</div>
-        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Insurance</div>
+        <div class="ph-ni" style="color:var(--accent)"><div class="ph-nic" style="background:var(--accent-dim);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h2"/></svg></div>Home</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14"/></svg></div>Wallet</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg></div>Health</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>Insurance</div>
       </div>
     </div></div>
   </div>
@@ -524,7 +555,7 @@ button{font-family:var(--f);cursor:pointer}
       <h3>7. Data Security</h3><p>We implement end-to-end encryption, multi-signature wallet security, biometric authentication, regular security audits, and SOC 2 Type II compliance.</p>
       <h3>8. Your Rights</h3><p>You may access, correct, delete your data, opt out of marketing, disconnect integrations, and export your data at any time.</p>
       <h3>9. Data Retention</h3><p>We retain data while your account is active. After deletion, certain data may be kept up to 90 days for backups and legal requirements.</p>
-      <h3>10. Contact Us</h3><p><strong>Email:</strong> privacy@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+      <h3>10. Contact Us</h3><p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1363617a6572706a53657a67727f6476727f677b3d726363">[email&#160;protected]</a><br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
     </div>
   </div>
 </div>
@@ -545,7 +576,7 @@ button{font-family:var(--f);cursor:pointer}
       <h3>8. Prohibited Activities</h3><p>You agree not to use the Service illegally, engage in financial crimes, manipulate markets, interfere with operations, reverse engineer the Service, or impersonate others.</p>
       <h3>9. Disclaimers & Liability</h3><p><strong>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES. VITALWEALTH SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES.</strong></p>
       <h3>10. Governing Law</h3><p>Governed by Delaware law. Disputes resolved through binding arbitration in San Francisco, California.</p>
-      <h3>11. Contact</h3><p><strong>Email:</strong> legal@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+      <h3>11. Contact</h3><p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2aea7a5a3ae82b4abb6a3aeb5a7a3aeb6aaeca3b2b2">[email&#160;protected]</a><br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
     </div>
   </div>
 </div>
@@ -562,12 +593,12 @@ button{font-family:var(--f);cursor:pointer}
       <h3>4. Duration</h3><p>Session cookies are deleted on browser close. Persistent cookies last 1-12 months.</p>
       <h3>5. Managing Cookies</h3><p>Control via browser settings, app settings, or industry opt-out tools. Blocking essential cookies may limit functionality.</p>
       <h3>6. Do Not Track</h3><p>We respect DNT browser signals and limit non-essential tracking when enabled.</p>
-      <h3>7. Contact</h3><p><strong>Email:</strong> privacy@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+      <h3>7. Contact</h3><p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8d8dac1dec9cbd1e8dec1dcc9c4dfcdc9c4dcc086c9d8d8">[email&#160;protected]</a><br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
     </div>
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════════════════
    CONFIGURATION — Set your backend endpoints here
    ═══════════════════════════════════════════════ */
@@ -587,6 +618,9 @@ const CONFIG = {
 
 /* ── NAV ── */
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('sc',scrollY>40));
+
+/* Particles */
+(function(){var c=document.getElementById('particles');if(c){for(var i=0;i<18;i++){var d=document.createElement('div');var s=Math.random()*3+1;d.style.cssText='position:absolute;border-radius:50%;background:var(--accent);opacity:'+(Math.random()*.12+.04)+';width:'+s+'px;height:'+s+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;animation:float '+(Math.random()*6+7)+'s ease-in-out infinite '+(Math.random()*4)+'s';c.appendChild(d)}}})();
 function togMob(){const m=document.getElementById('mob-menu'),o=m.classList.toggle('open');document.getElementById('m-ico').style.display=o?'none':'block';document.getElementById('x-ico').style.display=o?'block':'none'}
 function closeMob(){document.getElementById('mob-menu').classList.remove('open');document.getElementById('m-ico').style.display='block';document.getElementById('x-ico').style.display='none'}
 
@@ -701,15 +735,4 @@ const mObs=new MutationObserver(()=>{
       document.getElementById('wl-email').value='';
       document.getElementById('wl-name').value='';
       document.getElementById('wl-btn').disabled=false;
-      document.getElementById('wl-btn').classList.remove('loading');
-      document.querySelectorAll('.fc').forEach(el=>el.classList.remove('sel'));
-    },300);
-  }
-});
-mObs.observe(wlModal,{attributes:true,attributeFilter:['class']});
-
-/* ── SMOOTH SCROLL ── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}}));
-</script>
-</body>
-</html>
+      document.getElementById('wl-btn').class
