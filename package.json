@@ -1,0 +1,10 @@
+{
+  "name": "vitalwealth-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VitalWealth - DeFi Wallet, Health Tracking & Blockchain Insurance",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  }
+}

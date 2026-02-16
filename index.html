@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalWealth - DeFi Wallet, Health Tracking & Blockchain Insurance</title>
+<meta name="description" content="The premium super app that unifies DeFi portfolio management, smartwatch health tracking, and blockchain insurance — designed for the health-conscious investor.">
+<meta name="keywords" content="DeFi, blockchain, health tracking, insurance, crypto wallet, longevity, web3">
+<meta property="og:title" content="VitalWealth - Your Wealth. Your Health. One Platform.">
+<meta property="og:description" content="The premium super app that unifies DeFi portfolio management, smartwatch health tracking, and blockchain insurance.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vitalwealth.app">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VitalWealth - Your Wealth. Your Health. One Platform.">
+<meta name="twitter:description" content="DeFi portfolio management, smartwatch health tracking, and blockchain insurance in one app.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300e5a0'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23050a0e' font-family='sans-serif' font-weight='800' font-size='20'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#050a0e;
+  --bg-el:#0a1018;
+  --bg-card:rgba(255,255,255,0.025);
+  --bg-card-h:rgba(255,255,255,0.05);
+  --accent:#00e5a0;
+  --accent-dim:rgba(0,229,160,0.12);
+  --accent-glow:rgba(0,229,160,0.25);
+  --accent-dk:#00c48c;
+  --sec:#6366f1;
+  --sec-dim:rgba(99,102,241,0.12);
+  --warm:#f59e0b;
+  --warm-dim:rgba(245,158,11,0.12);
+  --red:#ef4444;
+  --tx:#e8edf2;
+  --tx2:#8899aa;
+  --tx3:#556677;
+  --bd:rgba(255,255,255,0.06);
+  --bdl:rgba(255,255,255,0.1);
+  --r:16px; --rs:10px; --rl:24px;
+  --mw:1200px;
+  --f:'Outfit',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow-x:hidden;line-height:1.6}
+::selection{background:var(--accent-dim);color:var(--accent)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bdl);border-radius:3px}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--f);cursor:pointer}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes barFill{from{width:0}to{width:var(--fill)}}
+@keyframes notifSlide{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:all .35s}
+.nav.sc{padding:12px 0;background:rgba(5,10,14,.88);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--bd)}
+.nav-in{max-width:var(--mw);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-br{display:flex;align-items:center;gap:10px}
+.nav-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--sec));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:var(--bg)}
+.nav-br>span{font-weight:700;font-size:18px;letter-spacing:-.02em}
+.nav-lk{display:flex;align-items:center;gap:32px}
+.nav-lk a{font-size:14px;font-weight:500;color:var(--tx2);transition:color .25s;letter-spacing:.01em}
+.nav-lk a:hover{color:var(--tx)}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:10px 24px;border-radius:9px;font-weight:600;font-size:14px;transition:all .3s;box-shadow:0 0 24px var(--accent-dim)}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 32px var(--accent-glow)}
+.mob-tog{display:none;background:none;border:none;color:var(--tx);padding:4px}
+.mob-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,10,14,.97);backdrop-filter:blur(24px);padding:24px;flex-direction:column;gap:20px;border-bottom:1px solid var(--bd);animation:slideDown .3s ease}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:16px;font-weight:500;color:var(--tx)}
+.mob-menu button{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:14px;border-radius:var(--rs);font-weight:600;font-size:15px}
+@media(max-width:768px){.nav-lk{display:none}.mob-tog{display:block}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 60px}
+.h-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.h-o1{top:8%;left:12%;width:520px;height:520px;background:radial-gradient(circle,var(--accent-dim),transparent 70%);animation:float 9s ease-in-out infinite}
+.h-o2{bottom:8%;right:8%;width:420px;height:420px;background:radial-gradient(circle,var(--sec-dim),transparent 70%);animation:float 11s ease-in-out infinite 2s}
+.h-o3{top:45%;left:45%;width:320px;height:320px;background:radial-gradient(circle,var(--warm-dim),transparent 70%);animation:float 13s ease-in-out infinite 4s}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:64px 64px;opacity:.35;mask-image:radial-gradient(ellipse 55% 55% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 55% 55% at 50% 50%,black,transparent)}
+.h-con{max-width:880px;text-align:center;position:relative;z-index:1}
+.h-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid rgba(0,229,160,.18);border-radius:100px;padding:7px 18px;margin-bottom:32px;font-size:13px;font-weight:500;color:var(--accent);animation:fadeUp .6s ease both}
+.h-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+.h-title{font-size:clamp(38px,6.5vw,76px);font-weight:900;line-height:1.03;letter-spacing:-.04em;margin-bottom:24px;animation:fadeUp .7s ease both .12s}
+.h-grad{background:linear-gradient(135deg,var(--accent),var(--sec));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:gradShift 5s ease infinite}
+.h-sub{font-size:clamp(16px,2vw,20px);color:var(--tx2);max-width:620px;margin:0 auto 40px;line-height:1.7;font-weight:300;animation:fadeUp .7s ease both .25s}
+.h-acts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease both .38s}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:16px 36px;border-radius:12px;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:all .3s;box-shadow:0 0 40px var(--accent-dim)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 50px var(--accent-glow)}
+.btn-s{color:var(--tx2);padding:16px 28px;border-radius:12px;border:1px solid var(--bdl);font-weight:500;font-size:16px;display:inline-flex;align-items:center;gap:8px;transition:all .3s;background:rgba(255,255,255,.015)}
+.btn-s:hover{border-color:var(--accent);color:var(--tx)}
+
+/* ── PHONE ── */
+.ph-sec{display:flex;justify-content:center;padding:0 24px 40px;position:relative}
+.ph-wrap{position:relative;display:flex;justify-content:center;align-items:flex-start}
+.phone{width:310px;background:rgba(10,16,24,.92);border-radius:40px;border:1px solid var(--bdl);padding:14px;box-shadow:0 50px 120px rgba(0,0,0,.5),0 0 80px var(--accent-dim)}
+.ph-scr{border-radius:28px;overflow:hidden;background:var(--bg);padding:18px}
+.ph-notch{width:80px;height:24px;background:#111;border-radius:0 0 14px 14px;margin:0 auto;position:relative;top:-18px;margin-bottom:-12px}
+.ph-stat{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:var(--tx3);margin-bottom:16px}
+.ph-card{border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--bd)}
+.ph-port{background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(99,102,241,.08))}
+.ph-long,.ph-ins{background:var(--bg-card)}
+.ph-lbl{font-size:10px;color:var(--tx3);font-weight:500;margin-bottom:2px}
+.ph-val{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.ph-chg{font-size:11px;color:var(--accent);font-weight:600;margin-top:3px}
+.ph-score{font-size:34px;font-weight:900;color:var(--accent)}
+.ph-smax{font-size:13px;color:var(--tx3)}
+.ph-mets{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.ph-met{background:rgba(255,255,255,.025);border-radius:8px;padding:7px 9px}
+.ph-ml{font-size:9px;color:var(--tx3)}
+.ph-mv{font-size:14px;font-weight:700;margin-top:1px}
+.ph-bar{height:3px;border-radius:2px;background:var(--bd);margin-top:4px;overflow:hidden}
+.ph-fill{height:100%;border-radius:2px;animation:barFill 1.2s ease both .5s}
+.ph-nav{display:flex;justify-content:space-around;margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)}
+.ph-ni{text-align:center;font-size:9px;font-weight:500}
+.ph-nic{width:18px;height:18px;margin:0 auto 3px;border-radius:4px}
+.ph-notif{position:absolute;padding:10px 16px;border-radius:12px;background:rgba(10,16,24,.9);border:1px solid var(--bdl);backdrop-filter:blur(12px);font-size:12px;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.ph-n1{top:60px;right:-160px;animation:notifSlide .6s ease both .8s}
+.ph-n2{top:140px;left:-170px;animation:notifSlide .6s ease both 1.2s}
+.ph-nt{font-weight:600;margin-bottom:2px}
+.ph-nx{color:var(--tx3);font-size:11px}
+@media(max-width:640px){.ph-notif{display:none}.phone{width:280px}}
+
+/* ── STATS ── */
+.st-sec{max-width:1020px;margin:0 auto 110px;padding:0 24px}
+.st-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border-radius:var(--r);overflow:hidden}
+.st-item{background:var(--bg-card);padding:32px 20px;text-align:center;transition:background .3s}
+.st-item:hover{background:var(--bg-card-h)}
+.st-val{font-size:clamp(28px,3.5vw,36px);font-weight:900;letter-spacing:-.02em;margin-bottom:4px;font-family:var(--mono)}
+.st-lbl{font-size:13px;color:var(--tx2);font-weight:400}
+@media(max-width:600px){.st-grid{grid-template-columns:1fr 1fr}}
+
+/* ── SECTION HEADERS ── */
+.s-tag{font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-family:var(--mono);margin-bottom:16px}
+.s-title{font-size:clamp(28px,4.5vw,46px);font-weight:900;letter-spacing:-.035em;margin-bottom:16px;line-height:1.1}
+.s-desc{color:var(--tx2);font-size:17px;max-width:560px;margin:0 auto;font-weight:300;line-height:1.65}
+
+/* ── FEATURES ── */
+.ft-sec{max-width:var(--mw);margin:0 auto;padding:0 24px 120px}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:24px;margin-top:64px}
+.ft-card{background:var(--bg-card);border:1px solid var(--bd);border-radius:20px;padding:32px;position:relative;overflow:hidden;transition:all .4s ease}
+.ft-card:hover{background:var(--bg-card-h);transform:translateY(-4px)}
+.ft-card:hover .ft-glow{opacity:.7}
+.ft-glow{position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;filter:blur(45px);opacity:.25;transition:opacity .4s;pointer-events:none}
+.ft-icon{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative}
+.ft-card h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px;position:relative}
+.ft-card p{color:var(--tx2);font-size:15px;line-height:1.65;font-weight:300;margin-bottom:20px;position:relative}
+.ft-list{display:flex;flex-direction:column;gap:10px;position:relative}
+.ft-li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:400}
+.ft-chk{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* ── NETWORKS ── */
+.nw-sec{max-width:var(--mw);margin:0 auto;padding:0 24px 120px}
+.nw-wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:48px}
+.nw-chip{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--bd);border-radius:12px;padding:12px 20px;transition:all .3s;cursor:default}
+.nw-chip:hover{transform:translateY(-2px)}
+.nw-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.nw-chip span{font-size:14px;font-weight:500}
+
+/* ── STEPS ── */
+.stp-sec{max-width:var(--mw);margin:0 auto;padding:0 24px 120px}
+.stp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:64px}
+.stp-card{text-align:center;padding:36px 28px;background:var(--bg-card);border-radius:20px;border:1px solid var(--bd);transition:all .3s;position:relative}
+.stp-card:hover{border-color:rgba(0,229,160,.2);transform:translateY(-3px)}
+.stp-num{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--sec));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:var(--bg);margin:0 auto 20px}
+.stp-card h3{font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em}
+.stp-card p{color:var(--tx2);font-size:14px;line-height:1.6;font-weight:300}
+.stp-conn{display:none;position:absolute;top:52px;left:calc(50% + 38px);width:calc(100% - 56px);height:2px;background:linear-gradient(90deg,var(--accent-dim),transparent)}
+@media(min-width:960px){.stp-conn{display:block}.stp-card:last-child .stp-conn{display:none}}
+
+/* ── TESTIMONIALS ── */
+.tm-sec{max-width:var(--mw);margin:0 auto;padding:0 24px 120px}
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:24px;margin-top:64px}
+.tm-card{background:var(--bg-card);border:1px solid var(--bd);border-radius:20px;padding:32px;display:flex;flex-direction:column;transition:border-color .3s}
+.tm-card:hover{border-color:var(--bdl)}
+.tm-stars{display:flex;gap:3px;margin-bottom:18px}
+.tm-quote{color:var(--tx);font-size:15px;line-height:1.75;font-weight:300;flex:1;font-style:italic;opacity:.9}
+.tm-auth{display:flex;align-items:center;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--bd)}
+.tm-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent-dim),var(--sec-dim));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--accent);flex-shrink:0}
+.tm-name{font-size:14px;font-weight:600}
+.tm-role{font-size:12px;color:var(--tx3)}
+
+/* ── CTA ── */
+.cta-sec{max-width:920px;margin:0 auto;padding:0 24px 120px}
+.cta-box{text-align:center;padding:clamp(48px,6vw,72px) clamp(24px,4vw,48px);border-radius:var(--rl);position:relative;overflow:hidden;border:1px solid var(--bd)}
+.cta-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-dim),var(--sec-dim));opacity:.45}
+.cta-o1{position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:var(--accent-glow);filter:blur(80px)}
+.cta-o2{position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(99,102,241,.18);filter:blur(80px)}
+.cta-con{position:relative;z-index:1}
+.cta-con h2{font-size:clamp(26px,4vw,42px);font-weight:900;letter-spacing:-.03em;margin-bottom:16px}
+.cta-con p{color:var(--tx2);font-size:17px;margin-bottom:32px;font-weight:300;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* ── FOOTER ── */
+.foot{border-top:1px solid var(--bd);max-width:var(--mw);margin:0 auto;padding:64px 24px 32px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.foot-brand p{color:var(--tx2);font-size:14px;line-height:1.7;font-weight:300;max-width:280px;margin-top:16px}
+.foot-col h4{font-size:13px;font-weight:600;margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:var(--tx2);margin-bottom:10px;transition:color .2s;font-weight:400}
+.foot-col a:hover{color:var(--tx)}
+.foot-btm{border-top:1px solid var(--bd);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot-btm span{font-size:13px;color:var(--tx3);font-weight:300}
+.foot-bl{display:flex;gap:24px}
+.foot-bl a{font-size:13px;color:var(--tx3);transition:color .2s}
+.foot-bl a:hover{color:var(--tx)}
+@media(max-width:768px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.m-back{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.m-box{position:relative;width:100%;background:var(--bg-el);border:1px solid var(--bdl);border-radius:var(--rl);padding:36px;animation:scaleIn .3s ease;box-shadow:0 50px 120px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto}
+.m-sm{max-width:460px}.m-lg{max-width:760px}
+.m-close{position:sticky;top:0;float:right;background:rgba(255,255,255,.05);border:none;color:var(--tx2);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2}
+.m-close:hover{background:rgba(255,255,255,.1);color:var(--tx)}
+.m-title{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.m-sub{color:var(--tx2);font-size:14px;margin-bottom:28px;font-weight:300}
+
+/* Form */
+.fg{margin-bottom:18px}
+.fl{display:block;font-size:13px;font-weight:500;color:var(--tx2);margin-bottom:6px}
+.fi{width:100%;padding:12px 16px;border-radius:var(--rs);border:1px solid var(--bd);background:rgba(255,255,255,.025);color:var(--tx);font-size:15px;font-family:var(--f);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--accent)}
+.fi.err{border-color:var(--red)}
+.fe{color:var(--red);font-size:12px;margin-top:6px;display:none}
+.fcg{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.fc{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;padding:10px 14px;border-radius:var(--rs);border:1px solid var(--bd);transition:all .2s;user-select:none}
+.fc.sel{border-color:rgba(0,229,160,.35);background:var(--accent-dim)}
+.fcb{width:18px;height:18px;border-radius:4px;border:2px solid var(--tx3);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.fc.sel .fcb{background:var(--accent);border-color:var(--accent)}
+.fcb svg{display:none}
+.fc.sel .fcb svg{display:block}
+.btn-sub{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent-dk));color:var(--bg);border:none;padding:14px;border-radius:var(--rs);font-weight:700;font-size:15px;transition:opacity .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-sub:hover{opacity:.9}
+.btn-sub:disabled{opacity:.5;cursor:not-allowed}
+.spinner{width:18px;height:18px;border:2px solid var(--bg);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;display:none}
+.btn-sub.loading .spinner{display:block}
+.btn-sub.loading .btn-text{display:none}
+
+.wl-ok{text-align:center;padding:24px 0;display:none}
+.ok-icon{width:68px;height:68px;border-radius:50%;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.wl-ok h3{font-size:22px;font-weight:700;margin-bottom:8px}
+.wl-ok p{color:var(--tx2);font-size:15px;font-weight:300}
+
+/* Legal */
+.lc{margin-top:16px}
+.lc h2{font-size:22px;font-weight:700;margin:32px 0 12px;letter-spacing:-.02em}
+.lc h2:first-child{margin-top:8px}
+.lc h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+.lc p{color:var(--tx2);font-size:14px;line-height:1.75;margin-bottom:12px;font-weight:300}
+.lc ul{list-style:none;padding-left:0;margin-bottom:12px}
+.lc ul li{color:var(--tx2);font-size:14px;line-height:1.75;padding-left:20px;position:relative;font-weight:300}
+.lc ul li::before{content:'';position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent)}
+.lc strong{color:var(--tx);font-weight:600}
+.lc-date{font-size:13px;color:var(--tx3);font-family:var(--mono);margin-bottom:20px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .hero{padding:100px 16px 40px}
+  .btn-p,.btn-s{width:100%;justify-content:center}
+  .h-acts{flex-direction:column;align-items:stretch}
+  .ft-grid{grid-template-columns:1fr}
+  .stp-grid{grid-template-columns:1fr 1fr}
+  .tm-grid{grid-template-columns:1fr}
+  .m-box{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="navbar">
+  <div class="nav-in">
+    <a href="#" class="nav-br"><div class="nav-logo">V</div><span>VitalWealth</span></a>
+    <div class="nav-lk">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#testimonials">Testimonials</a>
+      <button class="nav-cta" onclick="openM('wl')">Join Waitlist</button>
+    </div>
+    <button class="mob-tog" onclick="togMob()" aria-label="Menu">
+      <svg id="m-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="x-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="mob-menu" id="mob-menu">
+      <a href="#features" onclick="closeMob()">Features</a>
+      <a href="#how-it-works" onclick="closeMob()">How It Works</a>
+      <a href="#testimonials" onclick="closeMob()">Testimonials</a>
+      <button onclick="closeMob();openM('wl')">Join Waitlist</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="h-orb h-o1"></div><div class="h-orb h-o2"></div><div class="h-orb h-o3"></div>
+  <div class="h-grid"></div>
+  <div class="h-con">
+    <div class="h-badge"><span class="h-dot"></span>Now accepting early access signups</div>
+    <h1 class="h-title">Your Wealth. Your Health.<br><span class="h-grad">One Platform.</span></h1>
+    <p class="h-sub">The premium super app that unifies DeFi portfolio management, smartwatch health tracking, and blockchain insurance — designed for the health-conscious investor.</p>
+    <div class="h-acts">
+      <button class="btn-p" onclick="openM('wl')">Join Early Access <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <a href="#features" class="btn-s">See how it works <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHONE ═══ -->
+<section class="ph-sec">
+  <div class="ph-wrap rv">
+    <div class="ph-notif ph-n1"><div class="ph-nt" style="color:var(--accent)">🎯 Health Goal Achieved!</div><div class="ph-nx">10,000 steps completed today</div></div>
+    <div class="ph-notif ph-n2"><div class="ph-nt" style="color:var(--sec)">📈 ETH Price Alert</div><div class="ph-nx">Ethereum up 5.2% in the last hour</div></div>
+    <div class="phone"><div class="ph-scr">
+      <div class="ph-notch"></div>
+      <div class="ph-stat"><span>9:41</span><span>●●●●</span></div>
+      <div class="ph-card ph-port">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="ph-lbl">Portfolio Value</div><div style="font-size:10px;color:var(--accent);font-weight:600;background:var(--accent-dim);padding:2px 8px;border-radius:100px">LIVE</div></div>
+        <div class="ph-val" data-count="247850" data-prefix="$">$0</div>
+        <div class="ph-chg">+12.4% ↑</div>
+      </div>
+      <div class="ph-card ph-long">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="ph-lbl">Longevity Score</div><div style="font-size:10px;color:var(--sec);font-weight:600;background:var(--sec-dim);padding:2px 8px;border-radius:100px">Top 2%</div></div>
+        <div style="display:flex;align-items:baseline;gap:4px"><span class="ph-score" data-count="92">0</span><span class="ph-smax">/100</span></div>
+        <div class="ph-mets">
+          <div class="ph-met"><div class="ph-ml">Cardio</div><div class="ph-mv">88</div><div class="ph-bar"><div class="ph-fill" style="--fill:88%;background:var(--sec)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml">Recovery</div><div class="ph-mv">92</div><div class="ph-bar"><div class="ph-fill" style="--fill:92%;background:var(--accent)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml">Activity</div><div class="ph-mv">85</div><div class="ph-bar"><div class="ph-fill" style="--fill:85%;background:var(--warm)"></div></div></div>
+          <div class="ph-met"><div class="ph-ml">Sleep</div><div class="ph-mv">94</div><div class="ph-bar"><div class="ph-fill" style="--fill:94%;background:var(--accent)"></div></div></div>
+        </div>
+      </div>
+      <div class="ph-card ph-ins">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div class="ph-lbl">DeFi Insurance</div><div style="font-size:20px;font-weight:800">$1.2M</div><div class="ph-lbl">Coverage</div></div>
+          <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--accent)">-22%</div><div class="ph-lbl">Premium Discount</div></div>
+        </div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-ni" style="color:var(--accent)"><div class="ph-nic" style="background:var(--accent-dim)"></div>Home</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Wallet</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Health</div>
+        <div class="ph-ni" style="color:var(--tx3)"><div class="ph-nic" style="background:rgba(255,255,255,.04)"></div>Insurance</div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section class="st-sec rv">
+  <div class="st-grid">
+    <div class="st-item"><div class="st-val" data-count="12" data-suffix="+">0</div><div class="st-lbl">Blockchain Networks</div></div>
+    <div class="st-item"><div class="st-val" data-count="22" data-suffix="%">0</div><div class="st-lbl">Max Premium Discount</div></div>
+    <div class="st-item"><div class="st-val" data-count="24" data-suffix="/7">0</div><div class="st-lbl">Health Monitoring</div></div>
+    <div class="st-item"><div class="st-val" data-count="100" data-suffix="%">0</div><div class="st-lbl">On-Chain Transactions</div></div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="ft-sec" id="features">
+  <div style="text-align:center" class="rv">
+    <div class="s-tag">Core Features</div>
+    <h2 class="s-title">Three Pillars of Modern Wealth</h2>
+    <p class="s-desc">A unified platform that understands true wealth encompasses both financial prosperity and physical vitality.</p>
+  </div>
+  <div class="ft-grid">
+    <div class="ft-card rv d1"><div class="ft-glow" style="background:var(--accent-dim)"></div>
+      <div class="ft-icon" style="background:var(--accent-dim);color:var(--accent)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 12V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2v-5z"/><circle cx="16" cy="12" r="1" fill="currentColor"/></svg></div>
+      <h3>DeFi Wealth</h3><p>Track and manage assets across multiple blockchain networks with integrated lending and yield optimization.</p>
+      <div class="ft-list">
+        <div class="ft-li"><div class="ft-chk" style="background:var(--accent-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>12 supported networks</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--accent-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>LendAscent integration</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--accent-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Multi-signature security</div>
+      </div>
+    </div>
+    <div class="ft-card rv d2"><div class="ft-glow" style="background:var(--sec-dim)"></div>
+      <div class="ft-icon" style="background:var(--sec-dim);color:var(--sec)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <h3>Health Vitals</h3><p>Sync with your favorite smartwatches for real-time health monitoring and longevity score calculations.</p>
+      <div class="ft-list">
+        <div class="ft-li"><div class="ft-chk" style="background:var(--sec-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--sec)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Garmin, Apple, Samsung</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--sec-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--sec)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Biological age calculation</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--sec-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--sec)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Personalized recommendations</div>
+      </div>
+    </div>
+    <div class="ft-card rv d3"><div class="ft-glow" style="background:var(--warm-dim)"></div>
+      <div class="ft-icon" style="background:var(--warm-dim);color:var(--warm)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Smart Insurance</h3><p>Blockchain-based insurance with premium discounts based on your health metrics and longevity score.</p>
+      <div class="ft-list">
+        <div class="ft-li"><div class="ft-chk" style="background:var(--warm-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--warm)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Up to 20% premium discount</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--warm-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--warm)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Protocol & health coverage</div>
+        <div class="ft-li"><div class="ft-chk" style="background:var(--warm-dim)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--warm)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Instant claims processing</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NETWORKS ═══ -->
+<section class="nw-sec" id="networks">
+  <div style="text-align:center" class="rv"><div class="s-tag">Supported Networks</div></div>
+  <div class="nw-wrap rv">
+    <div class="nw-chip" data-color="#627EEA"><div class="nw-icon" style="background:rgba(98,126,234,.15);color:#627EEA">E</div><span>Ethereum</span></div>
+    <div class="nw-chip" data-color="#8247E5"><div class="nw-icon" style="background:rgba(130,71,229,.15);color:#8247E5">P</div><span>Polygon</span></div>
+    <div class="nw-chip" data-color="#28A0F0"><div class="nw-icon" style="background:rgba(40,160,240,.15);color:#28A0F0">A</div><span>Arbitrum</span></div>
+    <div class="nw-chip" data-color="#FF0420"><div class="nw-icon" style="background:rgba(255,4,32,.12);color:#FF0420">O</div><span>Optimism</span></div>
+    <div class="nw-chip" data-color="#0052FF"><div class="nw-icon" style="background:rgba(0,82,255,.15);color:#0052FF">B</div><span>Base</span></div>
+    <div class="nw-chip" data-color="#E84142"><div class="nw-icon" style="background:rgba(232,65,66,.12);color:#E84142">A</div><span>Avalanche</span></div>
+    <div class="nw-chip" data-color="#F0B90B"><div class="nw-icon" style="background:rgba(240,185,11,.12);color:#F0B90B">B</div><span>BNB Chain</span></div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="stp-sec" id="how-it-works">
+  <div style="text-align:center" class="rv"><div class="s-tag">Getting Started</div><h2 class="s-title">Get Started in Minutes</h2><p class="s-desc">From signup to full protection in four simple steps.</p></div>
+  <div class="stp-grid">
+    <div class="stp-card rv d1"><div class="stp-conn"></div><div class="stp-num">1</div><h3>Create Account</h3><p>Sign up with secure biometric authentication in seconds</p></div>
+    <div class="stp-card rv d2"><div class="stp-conn"></div><div class="stp-num">2</div><h3>Connect Devices</h3><p>Link your crypto wallets and sync your smartwatch</p></div>
+    <div class="stp-card rv d3"><div class="stp-conn"></div><div class="stp-num">3</div><h3>Get Protected</h3><p>Activate insurance with personalized health discounts</p></div>
+    <div class="stp-card rv d4"><div class="stp-num">4</div><h3>Thrive</h3><p>Monitor and grow both your wealth and health</p></div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="tm-sec" id="testimonials">
+  <div style="text-align:center" class="rv"><div class="s-tag">Testimonials</div><h2 class="s-title">Loved by Early Testers</h2><p class="s-desc">Hear from our beta users who are already experiencing the future of wealth management.</p></div>
+  <div class="tm-grid">
+    <div class="tm-card rv d1">
+      <div class="tm-stars"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+      <p class="tm-quote">"Finally, an app that understands my health is my greatest asset. The longevity score integration with insurance premiums is pure genius."</p>
+      <div class="tm-auth"><div class="tm-av">M</div><div><div class="tm-name">Marcus Chen</div><div class="tm-role">DeFi Enthusiast</div></div></div>
+    </div>
+    <div class="tm-card rv d2">
+      <div class="tm-stars"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+      <p class="tm-quote">"Managing my portfolio across multiple chains was a nightmare. VitalWealth makes it seamless and the health insights are a fantastic bonus."</p>
+      <div class="tm-auth"><div class="tm-av">S</div><div><div class="tm-name">Sarah Williams</div><div class="tm-role">Crypto Investor</div></div></div>
+    </div>
+    <div class="tm-card rv d3">
+      <div class="tm-stars"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+      <p class="tm-quote">"The 18% discount on my insurance premium thanks to my fitness data is incredible. This is the future of personalized finance."</p>
+      <div class="tm-auth"><div class="tm-av">J</div><div><div class="tm-name">James Rodriguez</div><div class="tm-role">Marathon Runner</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-sec rv">
+  <div class="cta-box"><div class="cta-bg"></div><div class="cta-o1"></div><div class="cta-o2"></div>
+    <div class="cta-con">
+      <h2>Be Among the First</h2>
+      <p>Limited early access spots available. Join the waitlist today and be part of the wealth revolution.</p>
+      <button class="btn-p" onclick="openM('wl')">Reserve Your Spot Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="#" class="nav-br"><div class="nav-logo" style="width:28px;height:28px;border-radius:7px;font-size:14px">V</div><span style="font-weight:700;font-size:16px">VitalWealth</span></a>
+      <p>The premium super app combining DeFi wealth management, health tracking, and blockchain insurance for the modern investor.</p>
+    </div>
+    <div class="foot-col"><h4>Product</h4><a href="#features">Features</a><a href="#networks">Supported Networks</a><a href="#how-it-works">How It Works</a><a href="#testimonials">Testimonials</a></div>
+    <div class="foot-col"><h4>Features</h4><a href="#features">DeFi Wallet</a><a href="#features">Health Tracking</a><a href="#features">Smart Insurance</a><a href="#features">Longevity Score</a></div>
+    <div class="foot-col"><h4>Legal</h4><a href="#" onclick="event.preventDefault();openM('priv')">Privacy Policy</a><a href="#" onclick="event.preventDefault();openM('terms')">Terms of Service</a><a href="#" onclick="event.preventDefault();openM('cook')">Cookie Policy</a></div>
+  </div>
+  <div class="foot-btm">
+    <span>&copy; 2025 VitalWealth. All rights reserved.</span>
+    <div class="foot-bl"><a href="#" onclick="event.preventDefault();openM('priv')">Privacy</a><a href="#" onclick="event.preventDefault();openM('terms')">Terms</a><a href="#" onclick="event.preventDefault();openM('cook')">Cookies</a></div>
+  </div>
+</footer>
+
+<!-- ═══ WAITLIST MODAL ═══ -->
+<div class="modal" id="m-wl">
+  <div class="m-back" onclick="closeM('wl')"></div>
+  <div class="m-box m-sm">
+    <button class="m-close" onclick="closeM('wl')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div id="wl-form">
+      <h3 class="m-title">Join the Waitlist</h3>
+      <p class="m-sub">Be the first to experience VitalWealth when we launch.</p>
+      <div class="fg"><label class="fl">Email Address *</label><input type="email" id="wl-email" class="fi" placeholder="you@example.com"><div class="fe" id="wl-err"></div></div>
+      <div class="fg"><label class="fl">Your Name</label><input type="text" id="wl-name" class="fi" placeholder="John Doe"></div>
+      <div class="fg"><label class="fl">I'm most interested in:</label>
+        <div class="fcg">
+          <div class="fc" onclick="togChk(this)" data-value="defi"><div class="fcb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>DeFi Wealth Management</div>
+          <div class="fc" onclick="togChk(this)" data-value="health"><div class="fcb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Health Tracking & Longevity</div>
+          <div class="fc" onclick="togChk(this)" data-value="insurance"><div class="fcb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Blockchain Insurance</div>
+        </div>
+      </div>
+      <button class="btn-sub" id="wl-btn" onclick="submitWL()"><span class="btn-text">Join Waitlist</span><div class="spinner"></div></button>
+    </div>
+    <div id="wl-ok" class="wl-ok">
+      <div class="ok-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3>You're on the list!</h3>
+      <p>We'll notify you as soon as VitalWealth is ready for you.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRIVACY MODAL ═══ -->
+<div class="modal" id="m-priv">
+  <div class="m-back" onclick="closeM('priv')"></div>
+  <div class="m-box m-lg">
+    <button class="m-close" onclick="closeM('priv')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="lc"><h2>Privacy Policy</h2><div class="lc-date">Last updated: January 22, 2025</div>
+      <h3>1. Introduction</h3><p>Welcome to VitalWealth ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and related services.</p><p><strong>Important:</strong> VitalWealth processes sensitive financial and health data. We employ bank-grade encryption and never sell your personal information to third parties.</p>
+      <h3>2. Information We Collect</h3><p>We collect information that you provide directly to us, including:</p><ul><li><strong>Account Information:</strong> Name, email address, and authentication credentials</li><li><strong>Wallet Information:</strong> Public blockchain wallet addresses (we never access your private keys)</li><li><strong>Health Data:</strong> Heart rate, sleep patterns, steps, VO2 max, HRV, stress levels, and other biometric data from connected smartwatches</li><li><strong>Financial Data:</strong> Cryptocurrency holdings, transaction history, and DeFi positions</li><li><strong>Insurance Information:</strong> Policy details, claims history, and coverage preferences</li></ul>
+      <h3>3. How We Use Your Information</h3><ul><li>Provide, maintain, and improve our services</li><li>Calculate your Longevity Score and biological age estimates</li><li>Determine insurance premium discounts based on health metrics</li><li>Process blockchain transactions and manage your portfolio</li><li>Send notifications about your accounts and health insights</li><li>Detect and prevent fraud and security incidents</li></ul>
+      <h3>4. Blockchain Data</h3><p>Your wallet addresses and on-chain transactions are processed through public blockchain networks. We implement privacy-preserving techniques. We never have access to your private keys or seed phrases.</p>
+      <h3>5. Health Data Protection</h3><ul><li>All health data encrypted at rest and in transit using AES-256</li><li>Health metrics processed locally on your device when possible</li><li>We comply with applicable health data regulations including HIPAA</li><li>You can delete your health data at any time</li></ul>
+      <h3>6. Data Sharing</h3><p>We do not sell your personal information. We may share only with:</p><ul><li><strong>Insurance Partners:</strong> Anonymized health scores (with consent)</li><li><strong>Blockchain Networks:</strong> Transaction data for on-chain operations</li><li><strong>Service Providers:</strong> Trusted partners bound by confidentiality</li><li><strong>Legal Requirements:</strong> When required by law</li></ul>
+      <h3>7. Data Security</h3><p>We implement end-to-end encryption, multi-signature wallet security, biometric authentication, regular security audits, and SOC 2 Type II compliance.</p>
+      <h3>8. Your Rights</h3><p>You may access, correct, delete your data, opt out of marketing, disconnect integrations, and export your data at any time.</p>
+      <h3>9. Data Retention</h3><p>We retain data while your account is active. After deletion, certain data may be kept up to 90 days for backups and legal requirements.</p>
+      <h3>10. Contact Us</h3><p><strong>Email:</strong> privacy@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TERMS MODAL ═══ -->
+<div class="modal" id="m-terms">
+  <div class="m-back" onclick="closeM('terms')"></div>
+  <div class="m-box m-lg">
+    <button class="m-close" onclick="closeM('terms')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="lc"><h2>Terms of Service</h2><div class="lc-date">Last updated: January 22, 2025</div>
+      <h3>1. Acceptance of Terms</h3><p>By accessing or using VitalWealth, you agree to these Terms. VitalWealth reserves the right to modify these Terms at any time.</p><p><strong>Risk Acknowledgment:</strong> Cryptocurrency and DeFi investments carry significant risk. You may lose some or all of your invested capital. VitalWealth does not provide financial advice.</p>
+      <h3>2. Eligibility</h3><ul><li>Must be at least 18 years of age</li><li>Have legal capacity to enter into agreements</li><li>Not prohibited from using cryptocurrency services</li><li>Not located in a sanctioned country</li></ul>
+      <h3>3. Account Registration</h3><p>You are responsible for maintaining credential confidentiality and all account activities. Provide accurate information, keep credentials secure, and notify us of unauthorized access.</p>
+      <h3>4. Wallet Services</h3><p>We never access your private keys. You are solely responsible for wallet security. Blockchain transactions are irreversible. We are not responsible for losses from user error or vulnerabilities.</p>
+      <h3>5. Health Tracking</h3><p>Health features are for informational purposes only and should not replace professional medical advice. Biological age calculations are algorithmic approximations.</p>
+      <h3>6. Insurance Services</h3><p>Insurance policies are governed by smart contract terms. Premium discounts are calculated algorithmically. Claims follow on-chain verification procedures.</p>
+      <h3>7. DeFi and Lending</h3><p>DeFi involves smart contract risk, liquidation risk, interest rate risk, and protocol risk. Third-party protocols may fail or become insolvent.</p>
+      <h3>8. Prohibited Activities</h3><p>You agree not to use the Service illegally, engage in financial crimes, manipulate markets, interfere with operations, reverse engineer the Service, or impersonate others.</p>
+      <h3>9. Disclaimers & Liability</h3><p><strong>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES. VITALWEALTH SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES.</strong></p>
+      <h3>10. Governing Law</h3><p>Governed by Delaware law. Disputes resolved through binding arbitration in San Francisco, California.</p>
+      <h3>11. Contact</h3><p><strong>Email:</strong> legal@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ COOKIES MODAL ═══ -->
+<div class="modal" id="m-cook">
+  <div class="m-back" onclick="closeM('cook')"></div>
+  <div class="m-box m-lg">
+    <button class="m-close" onclick="closeM('cook')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="lc"><h2>Cookie Policy</h2><div class="lc-date">Last updated: January 22, 2025</div>
+      <h3>1. What Are Cookies?</h3><p>Cookies are small text files stored on your device to help us remember preferences and improve your experience.</p>
+      <h3>2. Types of Cookies</h3><p><strong>Essential:</strong> Authentication, security, load balancing, privacy preferences.</p><p><strong>Functional:</strong> Language, display preferences, recently viewed assets.</p><p><strong>Analytics:</strong> Page views, feature usage, error tracking.</p><p><strong>Marketing:</strong> With consent — campaign effectiveness and personalized content.</p>
+      <h3>3. Third-Party Cookies</h3><p>Analytics providers, security services, and CDNs may place cookies.</p>
+      <h3>4. Duration</h3><p>Session cookies are deleted on browser close. Persistent cookies last 1-12 months.</p>
+      <h3>5. Managing Cookies</h3><p>Control via browser settings, app settings, or industry opt-out tools. Blocking essential cookies may limit functionality.</p>
+      <h3>6. Do Not Track</h3><p>We respect DNT browser signals and limit non-essential tracking when enabled.</p>
+      <h3>7. Contact</h3><p><strong>Email:</strong> privacy@vitalwealth.app<br><strong>Address:</strong> VitalWealth Inc., 548 Market Street, Suite 95879, San Francisco, CA 94104</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CONFIGURATION — Set your backend endpoints here
+   ═══════════════════════════════════════════════ */
+const CONFIG = {
+  // OPTION 1: Vercel serverless function + Supabase (recommended)
+  // Set this after deploying to Vercel with Supabase
+  API_ENDPOINT: '/api/waitlist',
+
+  // OPTION 2: Formspree fallback (quick & free, no backend needed)
+  // Sign up at formspree.io, create a form, paste your ID below
+  FORMSPREE_ID: 'xojnwaeb',
+
+  // OPTION 3: Google Sheets via Google Apps Script
+  // Deploy a Google Apps Script web app and paste URL here
+  SHEETS_URL: '',
+};
+
+/* ── NAV ── */
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('sc',scrollY>40));
+function togMob(){const m=document.getElementById('mob-menu'),o=m.classList.toggle('open');document.getElementById('m-ico').style.display=o?'none':'block';document.getElementById('x-ico').style.display=o?'block':'none'}
+function closeMob(){document.getElementById('mob-menu').classList.remove('open');document.getElementById('m-ico').style.display='block';document.getElementById('x-ico').style.display='none'}
+
+/* ── SCROLL REVEAL ── */
+const rObs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');rObs.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>rObs.observe(el));
+
+/* ── COUNT UP ── */
+function countUp(el,target,pre='',suf=''){const dur=1400;let s=null;function step(t){if(!s)s=t;const p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);el.textContent=pre+Math.floor(e*target).toLocaleString()+suf;if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
+const cObs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){countUp(x.target,+x.target.dataset.count,x.target.dataset.prefix||'',x.target.dataset.suffix||'');cObs.unobserve(x.target)}}),{threshold:.3});
+document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
+
+/* ── NETWORK HOVER ── */
+document.querySelectorAll('.nw-chip').forEach(c=>{const col=c.dataset.color;c.onmouseenter=()=>{c.style.borderColor=col+'55';c.style.background=col+'0d'};c.onmouseleave=()=>{c.style.borderColor='';c.style.background=''}});
+
+/* ── MODALS ── */
+function openM(n){document.getElementById('m-'+n).classList.add('open');document.body.style.overflow='hidden'}
+function closeM(n){document.getElementById('m-'+n).classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>{m.classList.remove('open');document.body.style.overflow=''})});
+
+/* ── WAITLIST FORM ── */
+function togChk(el){el.classList.toggle('sel')}
+
+async function submitWL(){
+  const email=document.getElementById('wl-email').value.trim();
+  const name=document.getElementById('wl-name').value.trim();
+  const errEl=document.getElementById('wl-err');
+  const emailIn=document.getElementById('wl-email');
+  const btn=document.getElementById('wl-btn');
+
+  // Validate
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    errEl.textContent='Please enter a valid email address';
+    errEl.style.display='block';emailIn.classList.add('err');return;
+  }
+  errEl.style.display='none';emailIn.classList.remove('err');
+
+  // Collect interests
+  const interests=[];
+  document.querySelectorAll('.fc.sel').forEach(el=>interests.push(el.dataset.value));
+
+  // Loading state
+  btn.classList.add('loading');btn.disabled=true;
+
+  const payload={email,name,interests};
+
+  try{
+    let success=false;
+
+    // Try primary API endpoint first
+    if(CONFIG.API_ENDPOINT){
+      try{
+        const r=await fetch(CONFIG.API_ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        if(r.ok){success=true}
+      }catch(e){console.warn('API endpoint failed, trying fallback...',e)}
+    }
+
+    // Fallback to Formspree
+    if(!success&&CONFIG.FORMSPREE_ID){
+      try{
+        const r=await fetch('https://formspree.io/f/'+CONFIG.FORMSPREE_ID,{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({email,name,interests:interests.join(', '),_subject:'New VitalWealth Waitlist Signup'})
+        });
+        if(r.ok){success=true}
+      }catch(e){console.warn('Formspree failed, trying Sheets...',e)}
+    }
+
+    // Fallback to Google Sheets
+    if(!success&&CONFIG.SHEETS_URL){
+      try{
+        await fetch(CONFIG.SHEETS_URL,{
+          method:'POST',mode:'no-cors',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        success=true; // no-cors always succeeds client-side
+      }catch(e){console.warn('Sheets failed',e)}
+    }
+
+    // If no backend configured, still show success (for development)
+    if(!CONFIG.API_ENDPOINT&&!CONFIG.FORMSPREE_ID&&!CONFIG.SHEETS_URL){
+      console.log('No backend configured. Waitlist data:',payload);
+      success=true;
+    }
+
+    // Show success
+    document.getElementById('wl-form').style.display='none';
+    document.getElementById('wl-ok').style.display='block';
+
+  }catch(e){
+    console.error('Submission error:',e);
+    errEl.textContent='Something went wrong. Please try again.';
+    errEl.style.display='block';
+  }finally{
+    btn.classList.remove('loading');btn.disabled=false;
+  }
+}
+
+// Reset form when modal closes
+const wlModal=document.getElementById('m-wl');
+const mObs=new MutationObserver(()=>{
+  if(!wlModal.classList.contains('open')){
+    setTimeout(()=>{
+      document.getElementById('wl-form').style.display='block';
+      document.getElementById('wl-ok').style.display='none';
+      document.getElementById('wl-email').value='';
+      document.getElementById('wl-name').value='';
+      document.getElementById('wl-btn').disabled=false;
+      document.getElementById('wl-btn').classList.remove('loading');
+      document.querySelectorAll('.fc').forEach(el=>el.classList.remove('sel'));
+    },300);
+  }
+});
+mObs.observe(wlModal,{attributes:true,attributeFilter:['class']});
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}}));
+</script>
+</body>
+</html>
