@@ -735,4 +735,15 @@ const mObs=new MutationObserver(()=>{
       document.getElementById('wl-email').value='';
       document.getElementById('wl-name').value='';
       document.getElementById('wl-btn').disabled=false;
-      document.getElementById('wl-btn').class
+      document.getElementById('wl-btn').classList.remove('loading');
+      document.querySelectorAll('.fc').forEach(el=>el.classList.remove('sel'));
+    },300);
+  }
+});
+mObs.observe(wlModal,{attributes:true,attributeFilter:['class']});
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}}));
+</script>
+</body>
+</html>
