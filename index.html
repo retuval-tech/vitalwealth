@@ -603,17 +603,9 @@ button{font-family:var(--f);cursor:pointer}
    CONFIGURATION — Set your backend endpoints here
    ═══════════════════════════════════════════════ */
 const CONFIG = {
-  // OPTION 1: Vercel serverless function + Supabase (recommended)
-  // Set this after deploying to Vercel with Supabase
-  API_ENDPOINT: '/api/waitlist',
-
-  // OPTION 2: Formspree fallback (quick & free, no backend needed)
-  // Sign up at formspree.io, create a form, paste your ID below
+  SUPABASE_URL: 'https://qmnfoqufgupixgugaiom.supabase.co',
+  SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjc2MjcsImV4cCI6MjA4NjkwMzYyN30.gWJQeozdhUDRbKHTrJnsYywqsseyElnZjVV_o7tUERU',
   FORMSPREE_ID: 'xojnwaeb',
-
-  // OPTION 3: Google Sheets via Google Apps Script
-  // Deploy a Google Apps Script web app and paste URL here
-  SHEETS_URL: '',
 };
 
 /* ── NAV ── */
@@ -665,54 +657,34 @@ async function submitWL(){
   // Loading state
   btn.classList.add('loading');btn.disabled=true;
 
-  const payload={email,name,interests};
-
   try{
-    let success=false;
+    // Save directly to Supabase
+    const r=await fetch(CONFIG.SUPABASE_URL+'/rest/v1/waitlist',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':CONFIG.SUPABASE_KEY,
+        'Authorization':'Bearer '+CONFIG.SUPABASE_KEY,
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({
+        email:email.toLowerCase().trim(),
+        name:name||null,
+        interests:interests,
+        signed_up_at:new Date().toISOString()
+      })
+    });
 
-    // Try primary API endpoint first
-    if(CONFIG.API_ENDPOINT){
-      try{
-        const r=await fetch(CONFIG.API_ENDPOINT,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload)
-        });
-        if(r.ok){success=true}
-      }catch(e){console.warn('API endpoint failed, trying fallback...',e)}
+    // Also send Formspree notification (so you get an email)
+    if(CONFIG.FORMSPREE_ID){
+      fetch('https://formspree.io/f/'+CONFIG.FORMSPREE_ID,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({email,name,interests:interests.join(', '),_subject:'New VitalWealth Signup: '+email})
+      }).catch(function(){});
     }
 
-    // Fallback to Formspree
-    if(!success&&CONFIG.FORMSPREE_ID){
-      try{
-        const r=await fetch('https://formspree.io/f/'+CONFIG.FORMSPREE_ID,{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Accept':'application/json'},
-          body:JSON.stringify({email,name,interests:interests.join(', '),_subject:'New VitalWealth Waitlist Signup'})
-        });
-        if(r.ok){success=true}
-      }catch(e){console.warn('Formspree failed, trying Sheets...',e)}
-    }
-
-    // Fallback to Google Sheets
-    if(!success&&CONFIG.SHEETS_URL){
-      try{
-        await fetch(CONFIG.SHEETS_URL,{
-          method:'POST',mode:'no-cors',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload)
-        });
-        success=true; // no-cors always succeeds client-side
-      }catch(e){console.warn('Sheets failed',e)}
-    }
-
-    // If no backend configured, still show success (for development)
-    if(!CONFIG.API_ENDPOINT&&!CONFIG.FORMSPREE_ID&&!CONFIG.SHEETS_URL){
-      console.log('No backend configured. Waitlist data:',payload);
-      success=true;
-    }
-
-    // Show success
+    // Show success (even if duplicate email - 409)
     document.getElementById('wl-form').style.display='none';
     document.getElementById('wl-ok').style.display='block';
 
