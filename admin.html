@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalWealth Admin Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300e5a0'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23050a0e' font-family='sans-serif' font-weight='800' font-size='20'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050a0e;--bg2:#0a1018;--bg3:#0f1722;
+  --a:#00e5a0;--ad:rgba(0,229,160,0.12);--ag:rgba(0,229,160,0.25);
+  --s:#6366f1;--sd:rgba(99,102,241,0.12);
+  --w:#f59e0b;--wd:rgba(245,158,11,0.12);
+  --r:#ef4444;--rd:rgba(239,68,68,0.12);
+  --t:#e8edf2;--t2:#8899aa;--t3:#556677;
+  --bd:rgba(255,255,255,0.06);--bdl:rgba(255,255,255,0.1);
+  --f:'Outfit',sans-serif;--m:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--bg);color:var(--t);min-height:100vh}
+::selection{background:var(--ad);color:var(--a)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bdl);border-radius:3px}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* Login Screen */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-box{width:100%;max-width:380px;text-align:center;animation:fadeIn .5s ease}
+.login-logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--s));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:var(--bg);margin:0 auto 24px}
+.login-box h1{font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em}
+.login-box p{color:var(--t2);font-size:14px;margin-bottom:32px}
+.login-input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t);font-size:15px;font-family:var(--f);outline:none;transition:border-color .2s;text-align:center;letter-spacing:.1em}
+.login-input:focus{border-color:var(--a)}
+.login-input.err{border-color:var(--r);animation:fadeIn .3s}
+.login-btn{width:100%;margin-top:14px;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--a),#00c48c);color:var(--bg);font-weight:700;font-size:15px;font-family:var(--f);cursor:pointer;transition:opacity .2s}
+.login-btn:hover{opacity:.9}
+.login-err{color:var(--r);font-size:13px;margin-top:12px;display:none}
+
+/* Dashboard Layout */
+.dash{display:none}
+.dash.active{display:block;animation:fadeIn .4s ease}
+.dash-head{background:var(--bg2);border-bottom:1px solid var(--bd);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.dash-brand{display:flex;align-items:center;gap:10px}
+.dash-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--a),var(--s));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:var(--bg)}
+.dash-brand span{font-weight:700;font-size:16px}
+.dash-brand small{color:var(--t3);font-size:12px;margin-left:8px;font-weight:400;background:var(--ad);padding:2px 8px;border-radius:100px;color:var(--a);font-family:var(--m)}
+.dash-actions{display:flex;gap:10px;align-items:center}
+.dash-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--bd);background:var(--bg3);color:var(--t2);font-size:13px;font-family:var(--f);font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.dash-btn:hover{border-color:var(--bdl);color:var(--t);background:rgba(255,255,255,.04)}
+.dash-btn.primary{background:var(--ad);border-color:rgba(0,229,160,.2);color:var(--a)}
+.dash-btn.primary:hover{background:rgba(0,229,160,.18)}
+.dash-btn.danger{color:var(--t2)}
+.dash-btn.danger:hover{color:var(--r);border-color:rgba(239,68,68,.3)}
+
+.dash-body{max-width:1200px;margin:0 auto;padding:32px 24px}
+
+/* Stats Grid */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:20px 24px;transition:border-color .2s}
+.stat-card:hover{border-color:var(--bdl)}
+.stat-label{font-size:12px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.stat-value{font-size:32px;font-weight:800;letter-spacing:-.02em;font-family:var(--m)}
+.stat-sub{font-size:12px;color:var(--t2);margin-top:4px}
+.stat-value.green{color:var(--a)}
+.stat-value.purple{color:var(--s)}
+.stat-value.amber{color:var(--w)}
+
+/* Interest Bars */
+.interest-section{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:24px;margin-bottom:32px}
+.interest-section h3{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.interest-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.interest-row:last-child{margin-bottom:0}
+.interest-name{font-size:13px;color:var(--t2);width:120px;flex-shrink:0}
+.interest-bar-bg{flex:1;height:28px;background:rgba(255,255,255,.03);border-radius:8px;overflow:hidden;position:relative}
+.interest-bar{height:100%;border-radius:8px;transition:width 1s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;padding-left:10px}
+.interest-bar span{font-size:11px;font-weight:600;font-family:var(--m)}
+.interest-count{font-size:13px;font-weight:600;width:40px;text-align:right;font-family:var(--m)}
+
+/* Table */
+.table-section{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:32px}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:12px}
+.table-head h3{font-size:14px;font-weight:600}
+.table-search{padding:8px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg3);color:var(--t);font-size:13px;font-family:var(--f);outline:none;width:240px;transition:border-color .2s}
+.table-search:focus{border-color:var(--a)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:12px 24px;font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:14px 24px;border-bottom:1px solid var(--bd);font-size:13px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.015)}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:500;margin-right:4px}
+.tag.defi{background:var(--ad);color:var(--a)}
+.tag.health{background:var(--sd);color:var(--s)}
+.tag.insurance{background:var(--wd);color:var(--w)}
+.empty-state{text-align:center;padding:60px 24px;color:var(--t3)}
+.empty-state svg{margin-bottom:16px;opacity:.3}
+.empty-state p{font-size:14px}
+
+/* Email Modal */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px)}
+.modal-box{position:relative;width:100%;max-width:560px;background:var(--bg2);border:1px solid var(--bdl);border-radius:20px;padding:32px;animation:fadeIn .3s ease;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.05);border:none;color:var(--t2);width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,.1);color:var(--t)}
+.modal-box h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.modal-box .modal-sub{color:var(--t2);font-size:13px;margin-bottom:24px}
+.modal-label{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.modal-input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg3);color:var(--t);font-size:14px;font-family:var(--f);outline:none;transition:border-color .2s;margin-bottom:16px}
+.modal-input:focus{border-color:var(--a)}
+.modal-textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg3);color:var(--t);font-size:14px;font-family:var(--f);outline:none;resize:vertical;min-height:150px;line-height:1.6;transition:border-color .2s;margin-bottom:16px}
+.modal-textarea:focus{border-color:var(--a)}
+.modal-send{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--a),#00c48c);color:var(--bg);font-weight:700;font-size:14px;font-family:var(--f);cursor:pointer;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.modal-send:hover{opacity:.9}
+.modal-send:disabled{opacity:.5;cursor:not-allowed}
+.modal-note{font-size:12px;color:var(--t3);margin-top:12px;text-align:center}
+
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;padding:80px;gap:8px;color:var(--t3);font-size:14px}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--a);animation:pulse 1s ease-in-out infinite}
+.loading-dot:nth-child(2){animation-delay:.2s}
+.loading-dot:nth-child(3){animation-delay:.4s}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;animation:fadeIn .3s ease;display:none;max-width:360px}
+.toast.success{background:var(--ad);color:var(--a);border:1px solid rgba(0,229,160,.2)}
+.toast.error{background:var(--rd);color:var(--r);border:1px solid rgba(239,68,68,.2)}
+
+/* Responsive */
+@media(max-width:768px){
+  .dash-head{padding:12px 16px;flex-wrap:wrap;gap:8px}
+  .dash-body{padding:20px 16px}
+  .stats{grid-template-columns:1fr 1fr}
+  .table-search{width:100%}
+  .dash-actions{flex-wrap:wrap}
+  td,th{padding:10px 14px}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr}
+  .interest-name{width:80px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">V</div>
+    <h1>Admin Dashboard</h1>
+    <p>Enter your admin password to continue</p>
+    <input type="password" class="login-input" id="loginPass" placeholder="••••••••" autofocus>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Access Dashboard</button>
+    <div class="login-err" id="loginErr">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash" id="dashboard">
+  <!-- Header -->
+  <div class="dash-head">
+    <div class="dash-brand">
+      <div class="dash-logo">V</div>
+      <span>VitalWealth</span>
+      <small>ADMIN</small>
+    </div>
+    <div class="dash-actions">
+      <button class="dash-btn" onclick="refreshData()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2v6h-6M3 12a9 9 0 0115.36-6.36L21 8M3 22v-6h6M21 12a9 9 0 01-15.36 6.36L3 16"/></svg>
+        Refresh
+      </button>
+      <button class="dash-btn" onclick="exportCSV()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Export CSV
+      </button>
+      <button class="dash-btn primary" onclick="openEmailModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email Waitlist
+      </button>
+      <button class="dash-btn danger" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="dash-body">
+    <!-- Stats -->
+    <div class="stats" id="statsGrid">
+      <div class="stat-card"><div class="stat-label">Total Signups</div><div class="stat-value green" id="s-total">—</div><div class="stat-sub">All time</div></div>
+      <div class="stat-card"><div class="stat-label">Today</div><div class="stat-value" id="s-today">—</div><div class="stat-sub">Last 24 hours</div></div>
+      <div class="stat-card"><div class="stat-label">This Week</div><div class="stat-value purple" id="s-week">—</div><div class="stat-sub">Last 7 days</div></div>
+      <div class="stat-card"><div class="stat-label">Conversion Potential</div><div class="stat-value amber" id="s-multi">—</div><div class="stat-sub">Interested in 2+ features</div></div>
+    </div>
+
+    <!-- Interest Breakdown -->
+    <div class="interest-section">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--a)" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Interest Breakdown
+      </h3>
+      <div class="interest-row">
+        <div class="interest-name">DeFi Wealth</div>
+        <div class="interest-bar-bg"><div class="interest-bar" id="bar-defi" style="width:0%;background:var(--ad)"><span id="pct-defi" style="color:var(--a)"></span></div></div>
+        <div class="interest-count" id="cnt-defi" style="color:var(--a)">0</div>
+      </div>
+      <div class="interest-row">
+        <div class="interest-name">Health Tracking</div>
+        <div class="interest-bar-bg"><div class="interest-bar" id="bar-health" style="width:0%;background:var(--sd)"><span id="pct-health" style="color:var(--s)"></span></div></div>
+        <div class="interest-count" id="cnt-health" style="color:var(--s)">0</div>
+      </div>
+      <div class="interest-row">
+        <div class="interest-name">Insurance</div>
+        <div class="interest-bar-bg"><div class="interest-bar" id="bar-insurance" style="width:0%;background:var(--wd)"><span id="pct-insurance" style="color:var(--w)"></span></div></div>
+        <div class="interest-count" id="cnt-insurance" style="color:var(--w)">0</div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-section">
+      <div class="table-head">
+        <h3 id="tableTitle">Waitlist Signups</h3>
+        <input type="text" class="table-search" id="searchInput" placeholder="Search by name or email..." oninput="filterTable()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Email</th><th>Name</th><th>Interests</th><th>Signed Up</th></tr></thead>
+          <tbody id="tableBody">
+            <tr><td colspan="5"><div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div><span>Loading signups...</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-overlay" id="emailModal">
+  <div class="modal-bg" onclick="closeEmailModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEmailModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <h3>Email Your Waitlist</h3>
+    <p class="modal-sub">Send an update to all <span id="emailCount">0</span> subscribers</p>
+    <label class="modal-label">Subject</label>
+    <input type="text" class="modal-input" id="emailSubject" placeholder="Exciting VitalWealth Update!">
+    <label class="modal-label">Message</label>
+    <textarea class="modal-textarea" id="emailBody" placeholder="Hi {name},
+
+We have exciting news to share about VitalWealth..."></textarea>
+    <button class="modal-send" id="emailSendBtn" onclick="sendEmail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Send to All Subscribers
+    </button>
+    <p class="modal-note">Emails are sent individually to each subscriber. {name} will be replaced with their name.</p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/*
+ * ═══════════════════════════════════════════
+ * CONFIGURATION — Update these values
+ * ═══════════════════════════════════════════
+ */
+const ADMIN_PASSWORD = 'vitalwealth2025'; // CHANGE THIS to your own password
+const SUPABASE_URL = 'https://qmnfoqufgupixgugaiom.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTMyNzYyNywiZXhwIjoyMDg2OTAzNjI3fQ.flF1DwRPxtFVZvDyZfPbkyOYnETak9nGf9BgCFmW8GE';
+
+let allSignups = [];
+
+/* ── LOGIN ── */
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() });
+
+function doLogin() {
+  const pass = document.getElementById('loginPass').value;
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    sessionStorage.setItem('vw_admin', '1');
+    loadData();
+  } else {
+    document.getElementById('loginPass').classList.add('err');
+    document.getElementById('loginErr').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('loginPass').classList.remove('err');
+    }, 600);
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('vw_admin');
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// Auto-login if session exists
+if (sessionStorage.getItem('vw_admin')) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').classList.add('active');
+  loadData();
+}
+
+/* ── DATA ── */
+async function loadData() {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    showDemoData();
+    return;
+  }
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=*&order=signed_up_at.desc`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch');
+    allSignups = await res.json();
+    renderStats();
+    renderTable();
+  } catch (e) {
+    console.error('Load error:', e);
+    showToast('Failed to load data. Check Supabase config.', 'error');
+    showDemoData();
+  }
+}
+
+function refreshData() {
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="5"><div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div><span>Refreshing...</span></div></td></tr>';
+  loadData();
+  showToast('Data refreshed', 'success');
+}
+
+function showDemoData() {
+  allSignups = [
+    { id: 1, email: 'demo@example.com', name: 'Demo User', interests: ['defi', 'health'], signed_up_at: new Date().toISOString() },
+    { id: 2, email: 'test@example.com', name: 'Test User', interests: ['insurance'], signed_up_at: new Date(Date.now() - 86400000).toISOString() },
+  ];
+  renderStats();
+  renderTable();
+  showToast('Showing demo data. Connect Supabase for real data.', 'error');
+}
+
+/* ── STATS ── */
+function renderStats() {
+  const now = new Date();
+  const day = new Date(now - 86400000);
+  const week = new Date(now - 604800000);
+
+  const total = allSignups.length;
+  const today = allSignups.filter(s => new Date(s.signed_up_at) > day).length;
+  const thisWeek = allSignups.filter(s => new Date(s.signed_up_at) > week).length;
+  const multiInterest = allSignups.filter(s => (s.interests || []).length >= 2).length;
+
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-today').textContent = today;
+  document.getElementById('s-week').textContent = thisWeek;
+  document.getElementById('s-multi').textContent = multiInterest;
+
+  // Interest breakdown
+  const defi = allSignups.filter(s => (s.interests || []).includes('defi')).length;
+  const health = allSignups.filter(s => (s.interests || []).includes('health')).length;
+  const insurance = allSignups.filter(s => (s.interests || []).includes('insurance')).length;
+  const max = Math.max(defi, health, insurance, 1);
+
+  setTimeout(() => {
+    document.getElementById('bar-defi').style.width = (defi / max * 100) + '%';
+    document.getElementById('bar-health').style.width = (health / max * 100) + '%';
+    document.getElementById('bar-insurance').style.width = (insurance / max * 100) + '%';
+  }, 100);
+
+  document.getElementById('cnt-defi').textContent = defi;
+  document.getElementById('cnt-health').textContent = health;
+  document.getElementById('cnt-insurance').textContent = insurance;
+
+  document.getElementById('pct-defi').textContent = total ? Math.round(defi / total * 100) + '%' : '';
+  document.getElementById('pct-health').textContent = total ? Math.round(health / total * 100) + '%' : '';
+  document.getElementById('pct-insurance').textContent = total ? Math.round(insurance / total * 100) + '%' : '';
+
+  document.getElementById('emailCount').textContent = total;
+}
+
+/* ── TABLE ── */
+function renderTable(data) {
+  const signups = data || allSignups;
+  const tbody = document.getElementById('tableBody');
+  document.getElementById('tableTitle').textContent = `Waitlist Signups (${signups.length})`;
+
+  if (signups.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      <p>No signups yet. Share your landing page!</p>
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = signups.map((s, i) => {
+    const date = new Date(s.signed_up_at);
+    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const interests = (s.interests || []).map(t =>
+      `<span class="tag ${t}">${t === 'defi' ? 'DeFi' : t === 'health' ? 'Health' : 'Insurance'}</span>`
+    ).join('');
+
+    return `<tr>
+      <td style="color:var(--t3);font-family:var(--m)">${signups.length - i}</td>
+      <td style="font-weight:500">${escHtml(s.email)}</td>
+      <td style="color:var(--t2)">${escHtml(s.name || '—')}</td>
+      <td>${interests || '<span style="color:var(--t3)">None selected</span>'}</td>
+      <td style="color:var(--t3);font-family:var(--m);font-size:12px">${dateStr}<br>${timeStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!q) { renderTable(); return; }
+  const filtered = allSignups.filter(s =>
+    (s.email || '').toLowerCase().includes(q) ||
+    (s.name || '').toLowerCase().includes(q)
+  );
+  renderTable(filtered);
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+/* ── EXPORT CSV ── */
+function exportCSV() {
+  if (allSignups.length === 0) {
+    showToast('No data to export', 'error');
+    return;
+  }
+
+  const rows = [['Email', 'Name', 'Interests', 'Signed Up']];
+  allSignups.forEach(s => {
+    rows.push([
+      s.email,
+      s.name || '',
+      (s.interests || []).join('; '),
+      new Date(s.signed_up_at).toLocaleString()
+    ]);
+  });
+
+  const csv = rows.map(r => r.map(c => `"${(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `vitalwealth-waitlist-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`Exported ${allSignups.length} signups to CSV`, 'success');
+}
+
+/* ── EMAIL ── */
+function openEmailModal() {
+  document.getElementById('emailModal').classList.add('open');
+  document.getElementById('emailCount').textContent = allSignups.length;
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('open');
+}
+
+async function sendEmail() {
+  const subject = document.getElementById('emailSubject').value.trim();
+  const body = document.getElementById('emailBody').value.trim();
+
+  if (!subject || !body) {
+    showToast('Please fill in subject and message', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('emailSendBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="animation:spin 1s linear infinite;display:inline-block">⟳</span> Sending...';
+
+  // In production, this would call an API endpoint that sends emails via SendGrid/Resend
+  // For now, we generate a mailto link with all addresses as BCC
+  try {
+    const emails = allSignups.map(s => s.email).filter(Boolean);
+
+    if (emails.length === 0) {
+      showToast('No email addresses to send to', 'error');
+      return;
+    }
+
+    // Create mailto link with BCC (works for smaller lists)
+    if (emails.length <= 50) {
+      const mailtoUrl = `mailto:?bcc=${encodeURIComponent(emails.join(','))}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoUrl, '_blank');
+      showToast(`Opening email client with ${emails.length} recipients`, 'success');
+    } else {
+      // For larger lists, copy emails to clipboard
+      await navigator.clipboard.writeText(emails.join(', '));
+      showToast(`${emails.length} emails copied to clipboard. Paste into your email client's BCC field.`, 'success');
+    }
+
+    closeEmailModal();
+  } catch (e) {
+    showToast('Failed to prepare email. Try copying addresses manually.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send to All Subscribers';
+  }
+}
+
+/* ── TOAST ── */
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 4000);
+}
+
+/* ── KEYBOARD ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeEmailModal();
+});
+</script>
+</body>
+</html>
