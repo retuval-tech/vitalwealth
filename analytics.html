@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalWealth Analytics</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300e5a0'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23050a0e' font-family='sans-serif' font-weight='800' font-size='20'%3EV%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050a0e;--bg2:#0a1018;--bg3:#0f1722;
+  --a:#00e5a0;--ad:rgba(0,229,160,0.12);--ag:rgba(0,229,160,0.25);
+  --s:#6366f1;--sd:rgba(99,102,241,0.12);
+  --w:#f59e0b;--wd:rgba(245,158,11,0.12);
+  --c:#06b6d4;--cd:rgba(6,182,212,0.12);
+  --p:#ec4899;--pd:rgba(236,72,153,0.12);
+  --r:#ef4444;--rd:rgba(239,68,68,0.12);
+  --t:#e8edf2;--t2:#8899aa;--t3:#556677;
+  --bd:rgba(255,255,255,0.06);--bdl:rgba(255,255,255,0.1);
+  --f:'Outfit',sans-serif;--m:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f);background:var(--bg);color:var(--t);min-height:100vh}
+::selection{background:var(--ad);color:var(--a)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bdl);border-radius:3px}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* Login */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-box{width:100%;max-width:380px;text-align:center;animation:fadeIn .5s ease}
+.login-logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--s));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:var(--bg);margin:0 auto 24px}
+.login-box h1{font-size:24px;font-weight:700;margin-bottom:8px}
+.login-box p{color:var(--t2);font-size:14px;margin-bottom:32px}
+.login-input{width:100%;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);color:var(--t);font-size:15px;font-family:var(--f);outline:none;transition:border-color .2s;text-align:center;letter-spacing:.1em}
+.login-input:focus{border-color:var(--a)}
+.login-input.err{border-color:var(--r)}
+.login-btn{width:100%;margin-top:14px;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--a),#00c48c);color:var(--bg);font-weight:700;font-size:15px;font-family:var(--f);cursor:pointer}
+.login-btn:hover{opacity:.9}
+.login-err{color:var(--r);font-size:13px;margin-top:12px;display:none}
+
+/* Dashboard */
+.dash{display:none}
+.dash.active{display:block;animation:fadeIn .4s}
+.dash-head{background:var(--bg2);border-bottom:1px solid var(--bd);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.dash-brand{display:flex;align-items:center;gap:10px}
+.dash-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--a),var(--s));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:var(--bg)}
+.dash-brand span{font-weight:700;font-size:16px}
+.dash-brand small{color:var(--a);font-size:12px;margin-left:8px;font-weight:400;background:var(--ad);padding:2px 8px;border-radius:100px;font-family:var(--m)}
+.dash-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.dash-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--bd);background:var(--bg3);color:var(--t2);font-size:13px;font-family:var(--f);font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.dash-btn:hover{border-color:var(--bdl);color:var(--t)}
+.dash-btn.active{background:var(--ad);border-color:rgba(0,229,160,.2);color:var(--a)}
+.dash-btn.danger:hover{color:var(--r);border-color:rgba(239,68,68,.3)}
+.nav-links{display:flex;gap:6px}
+.nav-links a{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent}
+.nav-links a:hover{color:var(--t)}
+.nav-links a.active{background:var(--sd);border-color:rgba(99,102,241,.2);color:var(--s)}
+
+.dash-body{max-width:1200px;margin:0 auto;padding:32px 24px}
+
+/* Time filter */
+.time-filter{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.tf-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg2);color:var(--t3);font-size:12px;font-family:var(--f);font-weight:500;cursor:pointer;transition:all .2s}
+.tf-btn:hover{color:var(--t2);border-color:var(--bdl)}
+.tf-btn.active{background:var(--ad);border-color:rgba(0,229,160,.2);color:var(--a)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:20px;transition:border-color .2s}
+.stat-card:hover{border-color:var(--bdl)}
+.stat-label{font-size:11px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em;font-family:var(--m)}
+.stat-sub{font-size:11px;color:var(--t2);margin-top:4px}
+.green{color:var(--a)}.purple{color:var(--s)}.amber{color:var(--w)}.cyan{color:var(--c)}.pink{color:var(--p)}
+
+/* Chart */
+.chart-section{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:24px;margin-bottom:24px}
+.chart-section h3{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-container{width:100%;height:200px;position:relative}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:100%;padding-top:20px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;min-height:2px;transition:height .6s cubic-bezier(.22,1,.36,1);position:relative;cursor:default}
+.chart-bar:hover{opacity:.8}
+.chart-bar-tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--bdl);border-radius:8px;padding:4px 10px;font-size:11px;font-family:var(--m);white-space:nowrap;z-index:5;pointer-events:none}
+.chart-bar:hover .chart-bar-tooltip{display:block}
+.chart-label{font-size:9px;color:var(--t3);margin-top:6px;font-family:var(--m);text-align:center}
+.chart-zero{color:var(--t3);font-size:13px;text-align:center;padding:60px 0}
+
+/* Two-column grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+
+/* Breakdown lists */
+.breakdown{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:24px}
+.breakdown h3{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bk-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.bk-row:last-child{border-bottom:none}
+.bk-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.bk-name{flex:1;font-size:13px;font-weight:500}
+.bk-count{font-size:13px;font-weight:600;font-family:var(--m);margin-right:8px}
+.bk-pct{font-size:11px;color:var(--t3);font-family:var(--m);width:40px;text-align:right}
+.bk-bar{flex:2;height:6px;background:rgba(255,255,255,.03);border-radius:3px;overflow:hidden}
+.bk-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.22,1,.36,1)}
+
+/* Live dot */
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--a);animation:pulse 1.5s ease-in-out infinite;display:inline-block}
+
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;padding:80px;gap:8px;color:var(--t3);font-size:14px}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--a);animation:pulse 1s ease-in-out infinite}
+.loading-dot:nth-child(2){animation-delay:.2s}
+.loading-dot:nth-child(3){animation-delay:.4s}
+
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;animation:fadeIn .3s;display:none;max-width:360px}
+.toast.success{background:var(--ad);color:var(--a);border:1px solid rgba(0,229,160,.2)}
+.toast.error{background:var(--rd);color:var(--r);border:1px solid rgba(239,68,68,.2)}
+
+@media(max-width:768px){
+  .dash-head{padding:12px 16px;flex-wrap:wrap;gap:8px}
+  .dash-body{padding:20px 16px}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .chart-container{height:160px}
+}
+@media(max-width:480px){.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">V</div>
+    <h1>Analytics Dashboard</h1>
+    <p>Enter your admin password to continue</p>
+    <input type="password" class="login-input" id="loginPass" placeholder="••••••••" autofocus>
+    <button class="login-btn" onclick="doLogin()">Access Analytics</button>
+    <div class="login-err" id="loginErr">Incorrect password</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash" id="dashboard">
+  <div class="dash-head">
+    <div class="dash-brand">
+      <div class="dash-logo">V</div>
+      <span>VitalWealth</span>
+      <small>ANALYTICS</small>
+    </div>
+    <div class="dash-actions">
+      <div class="nav-links">
+        <a href="admin.html">Waitlist</a>
+        <a href="analytics.html" class="active">Analytics</a>
+      </div>
+      <button class="dash-btn" onclick="loadAnalytics()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 12a9 9 0 0115.36-6.36L21 8M3 22v-6h6M21 12a9 9 0 01-15.36 6.36L3 16"/></svg>
+        Refresh
+      </button>
+      <button class="dash-btn danger" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <!-- Time Filter -->
+    <div class="time-filter">
+      <button class="tf-btn" data-range="today" onclick="setRange('today',this)">Today</button>
+      <button class="tf-btn active" data-range="7d" onclick="setRange('7d',this)">7 Days</button>
+      <button class="tf-btn" data-range="30d" onclick="setRange('30d',this)">30 Days</button>
+      <button class="tf-btn" data-range="90d" onclick="setRange('90d',this)">90 Days</button>
+      <button class="tf-btn" data-range="all" onclick="setRange('all',this)">All Time</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label"><span class="live-dot"></span> Total Visitors</div><div class="stat-value green" id="s-visitors">—</div><div class="stat-sub" id="s-visitors-sub">Loading...</div></div>
+      <div class="stat-card"><div class="stat-label">Page Views</div><div class="stat-value purple" id="s-views">—</div><div class="stat-sub" id="s-views-sub">Including returns</div></div>
+      <div class="stat-card"><div class="stat-label">Avg Duration</div><div class="stat-value cyan" id="s-duration">—</div><div class="stat-sub">Time on page</div></div>
+      <div class="stat-card"><div class="stat-label">Waitlist Signups</div><div class="stat-value amber" id="s-signups">—</div><div class="stat-sub" id="s-signups-sub">In this period</div></div>
+      <div class="stat-card"><div class="stat-label">Conversion Rate</div><div class="stat-value pink" id="s-conv">—</div><div class="stat-sub">Visitors → Signups</div></div>
+    </div>
+
+    <!-- Chart: Views Over Time -->
+    <div class="chart-section">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--a)" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Visitors Over Time
+      </h3>
+      <div class="chart-container"><div class="chart-bars" id="chartBars"></div></div>
+    </div>
+
+    <!-- Two columns -->
+    <div class="grid-2">
+      <!-- Referral Sources -->
+      <div class="breakdown">
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--s)" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Traffic Sources
+        </h3>
+        <div id="referrerList"><div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div></div>
+      </div>
+
+      <!-- Devices -->
+      <div class="breakdown">
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--w)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+          Devices & Browsers
+        </h3>
+        <div id="deviceList"><div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div></div>
+      </div>
+    </div>
+
+    <!-- Browser breakdown -->
+    <div class="breakdown" style="margin-bottom:24px">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--c)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Browsers
+      </h3>
+      <div id="browserList"><div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PASSWORD = 'vitalwealth2025';
+const SUPABASE_URL = 'https://qmnfoqufgupixgugaiom.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTMyNzYyNywiZXhwIjoyMDg2OTAzNjI3fQ.flF1DwRPxtFVZvDyZfPbkyOYnETak9nGf9BgCFmW8GE';
+
+let allViews = [];
+let allSignups = [];
+let currentRange = '7d';
+
+/* Login */
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() });
+function doLogin() {
+  if (document.getElementById('loginPass').value === ADMIN_PASSWORD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    sessionStorage.setItem('vw_analytics', '1');
+    loadAnalytics();
+  } else {
+    document.getElementById('loginPass').classList.add('err');
+    document.getElementById('loginErr').style.display = 'block';
+    setTimeout(() => document.getElementById('loginPass').classList.remove('err'), 600);
+  }
+}
+function doLogout() {
+  sessionStorage.removeItem('vw_analytics');
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+if (sessionStorage.getItem('vw_analytics')) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').classList.add('active');
+  loadAnalytics();
+}
+
+/* Data Loading */
+async function loadAnalytics() {
+  try {
+    const [viewsRes, signupsRes] = await Promise.all([
+      fetch(SUPABASE_URL + '/rest/v1/page_views?select=*&order=visited_at.desc&limit=5000', {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      }),
+      fetch(SUPABASE_URL + '/rest/v1/waitlist?select=*&order=signed_up_at.desc', {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      })
+    ]);
+    allViews = await viewsRes.json();
+    allSignups = await signupsRes.json();
+    renderAll();
+  } catch (e) {
+    console.error(e);
+    showToast('Failed to load analytics data', 'error');
+  }
+}
+
+function setRange(range, btn) {
+  currentRange = range;
+  document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+function getFilteredData() {
+  const now = new Date();
+  let cutoff = new Date(0);
+  if (currentRange === 'today') cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  else if (currentRange === '7d') cutoff = new Date(now - 7 * 86400000);
+  else if (currentRange === '30d') cutoff = new Date(now - 30 * 86400000);
+  else if (currentRange === '90d') cutoff = new Date(now - 90 * 86400000);
+
+  const views = allViews.filter(v => new Date(v.visited_at) >= cutoff && !v.session_id.endsWith('_dur'));
+  const durations = allViews.filter(v => new Date(v.visited_at) >= cutoff && v.session_id.endsWith('_dur'));
+  const signups = allSignups.filter(s => new Date(s.signed_up_at) >= cutoff);
+  return { views, durations, signups, cutoff };
+}
+
+function renderAll() {
+  const { views, durations, signups } = getFilteredData();
+
+  // Unique visitors by session_id
+  const uniqueSessions = new Set(views.map(v => v.session_id)).size;
+  const totalViews = views.length;
+  const totalSignups = signups.length;
+  const convRate = uniqueSessions > 0 ? ((totalSignups / uniqueSessions) * 100).toFixed(1) : '0';
+
+  // Average duration
+  const durs = durations.map(d => d.duration_seconds).filter(d => d > 0 && d < 3600);
+  const avgDur = durs.length > 0 ? Math.round(durs.reduce((a, b) => a + b, 0) / durs.length) : 0;
+  const durMin = Math.floor(avgDur / 60);
+  const durSec = avgDur % 60;
+
+  document.getElementById('s-visitors').textContent = uniqueSessions.toLocaleString();
+  document.getElementById('s-visitors-sub').textContent = 'Unique sessions';
+  document.getElementById('s-views').textContent = totalViews.toLocaleString();
+  document.getElementById('s-duration').textContent = durMin > 0 ? durMin + 'm ' + durSec + 's' : avgDur + 's';
+  document.getElementById('s-signups').textContent = totalSignups.toLocaleString();
+  document.getElementById('s-conv').textContent = convRate + '%';
+
+  renderChart(views);
+  renderReferrers(views);
+  renderDevices(views);
+  renderBrowsers(views);
+}
+
+/* Chart */
+function renderChart(views) {
+  const container = document.getElementById('chartBars');
+  if (views.length === 0) {
+    container.innerHTML = '<div class="chart-zero">No visitor data yet. Traffic will appear here.</div>';
+    return;
+  }
+
+  // Group by day
+  const days = {};
+  views.forEach(v => {
+    const d = new Date(v.visited_at).toISOString().split('T')[0];
+    days[d] = (days[d] || 0) + 1;
+  });
+
+  // Determine number of bars
+  let numDays = 7;
+  if (currentRange === 'today') numDays = 1;
+  else if (currentRange === '30d') numDays = 30;
+  else if (currentRange === '90d') numDays = 90;
+  else if (currentRange === 'all') numDays = Math.max(Object.keys(days).length, 7);
+
+  // Fill in missing days
+  const labels = [];
+  const values = [];
+  for (let i = numDays - 1; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000).toISOString().split('T')[0];
+    labels.push(d);
+    values.push(days[d] || 0);
+  }
+
+  const max = Math.max(...values, 1);
+  const showLabel = numDays <= 14;
+
+  container.innerHTML = values.map((v, i) => {
+    const h = Math.max((v / max) * 100, 2);
+    const date = new Date(labels[i]);
+    const lbl = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const color = v > 0 ? 'var(--a)' : 'var(--bd)';
+    return '<div class="chart-bar-wrap">' +
+      '<div class="chart-bar" style="height:' + h + '%;background:' + color + '">' +
+      '<div class="chart-bar-tooltip">' + lbl + ': ' + v + ' visits</div>' +
+      '</div>' +
+      (showLabel ? '<div class="chart-label">' + date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</div>' : '') +
+      '</div>';
+  }).join('');
+}
+
+/* Referrers */
+function renderReferrers(views) {
+  const counts = {};
+  views.forEach(v => {
+    const r = v.referrer || 'direct';
+    counts[r] = (counts[r] || 0) + 1;
+  });
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const max = sorted.length > 0 ? sorted[0][1] : 1;
+  const total = views.length || 1;
+
+  const el = document.getElementById('referrerList');
+  if (sorted.length === 0) { el.innerHTML = '<div style="color:var(--t3);font-size:13px;padding:20px 0">No data yet</div>'; return; }
+
+  const icons = { 'direct': '🏠', 'google.com': '🔍', 'twitter.com': '𝕏', 'x.com': '𝕏', 'reddit.com': '🟠', 'facebook.com': '📘', 'linkedin.com': '💼', 'github.com': '🐙', 't.co': '𝕏' };
+
+  el.innerHTML = sorted.map(([name, count]) => {
+    const pct = Math.round(count / total * 100);
+    const icon = icons[name] || '🔗';
+    return '<div class="bk-row">' +
+      '<div class="bk-icon" style="background:var(--sd);font-size:16px">' + icon + '</div>' +
+      '<div class="bk-name">' + escHtml(name) + '</div>' +
+      '<div class="bk-count purple">' + count + '</div>' +
+      '<div class="bk-bar"><div class="bk-fill" style="width:' + (count / max * 100) + '%;background:var(--s)"></div></div>' +
+      '<div class="bk-pct">' + pct + '%</div>' +
+      '</div>';
+  }).join('');
+}
+
+/* Devices */
+function renderDevices(views) {
+  const counts = {};
+  views.forEach(v => { counts[v.device || 'unknown'] = (counts[v.device || 'unknown'] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const max = sorted.length > 0 ? sorted[0][1] : 1;
+  const total = views.length || 1;
+
+  const icons = { 'desktop': '🖥️', 'mobile': '📱', 'tablet': '📋', 'unknown': '❓' };
+  const colors = { 'desktop': '--a', 'mobile': '--w', 'tablet': '--c', 'unknown': '--t3' };
+
+  const el = document.getElementById('deviceList');
+  if (sorted.length === 0) { el.innerHTML = '<div style="color:var(--t3);font-size:13px;padding:20px 0">No data yet</div>'; return; }
+
+  el.innerHTML = sorted.map(([name, count]) => {
+    const pct = Math.round(count / total * 100);
+    const c = colors[name] || '--t3';
+    return '<div class="bk-row">' +
+      '<div class="bk-icon" style="background:var(' + c.replace('--', '--') + 'd);font-size:16px">' + (icons[name] || '❓') + '</div>' +
+      '<div class="bk-name" style="text-transform:capitalize">' + name + '</div>' +
+      '<div class="bk-count" style="color:var(' + c + ')">' + count + '</div>' +
+      '<div class="bk-bar"><div class="bk-fill" style="width:' + (count / max * 100) + '%;background:var(' + c + ')"></div></div>' +
+      '<div class="bk-pct">' + pct + '%</div>' +
+      '</div>';
+  }).join('');
+}
+
+/* Browsers */
+function renderBrowsers(views) {
+  const counts = {};
+  views.forEach(v => { counts[v.browser || 'other'] = (counts[v.browser || 'other'] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const max = sorted.length > 0 ? sorted[0][1] : 1;
+  const total = views.length || 1;
+
+  const icons = { 'chrome': '🟢', 'safari': '🔵', 'firefox': '🟠', 'edge': '🔷', 'other': '⚪' };
+  const colors = { 'chrome': '--a', 'safari': '--c', 'firefox': '--w', 'edge': '--s', 'other': '--t3' };
+
+  const el = document.getElementById('browserList');
+  if (sorted.length === 0) { el.innerHTML = '<div style="color:var(--t3);font-size:13px;padding:20px 0">No data yet</div>'; return; }
+
+  el.innerHTML = sorted.map(([name, count]) => {
+    const pct = Math.round(count / total * 100);
+    const c = colors[name] || '--t3';
+    return '<div class="bk-row">' +
+      '<div class="bk-icon" style="background:var(--bg3);font-size:16px">' + (icons[name] || '⚪') + '</div>' +
+      '<div class="bk-name" style="text-transform:capitalize">' + name + '</div>' +
+      '<div class="bk-count" style="color:var(' + c + ')">' + count + '</div>' +
+      '<div class="bk-bar"><div class="bk-fill" style="width:' + (count / max * 100) + '%;background:var(' + c + ')"></div></div>' +
+      '<div class="bk-pct">' + pct + '%</div>' +
+      '</div>';
+  }).join('');
+}
+
+function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function showToast(msg, type) { var t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast ' + type; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; }, 4000); }
+</script>
+</body>
+</html>
