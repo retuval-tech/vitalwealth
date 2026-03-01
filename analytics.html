@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics — VitalWealth</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1a;--bg2:#111827;--bg3:#1a2234;--teal:#2dd4bf;--teal-d:rgba(45,212,191,.1);--teal-m:rgba(45,212,191,.2);--emerald:#34d399;--violet:#a78bfa;--vi-d:rgba(167,139,250,.1);--rose:#fb7185;--ro-d:rgba(251,113,133,.1);--amber:#fbbf24;--am-d:rgba(251,191,36,.1);--sky:#38bdf8;--sk-d:rgba(56,189,248,.1);--txt:#f1f5f9;--txt2:#94a3b8;--txt3:#475569;--brd:rgba(255,255,255,.06);--brd2:rgba(255,255,255,.1);--f:'Sora',sans-serif;--f2:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--f2);background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:0 28px}
+.header{padding:20px 0;border-bottom:1px solid var(--brd)}.h-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--txt)}.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal),var(--emerald));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-weight:800;font-size:16px;color:var(--bg)}.logo-text{font-family:var(--f);font-weight:700;font-size:16px}
+.nav-links{display:flex;gap:20px;align-items:center}.nav-links a{color:var(--txt2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--teal)}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.login-box{background:var(--bg2);border:1px solid var(--brd2);border-radius:20px;padding:40px;max-width:380px;width:100%;text-align:center}
+.login-box h2{font-family:var(--f);font-size:22px;font-weight:700;margin-bottom:6px}.login-box p{color:var(--txt2);font-size:13px;margin-bottom:24px}
+.form-input{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--brd);border-radius:10px;color:var(--txt);font-size:14px;font-family:var(--f2);outline:none;transition:border-color .2s;margin-bottom:12px}.form-input:focus{border-color:var(--teal)}
+.form-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--emerald));font-family:var(--f);font-weight:600;font-size:14px;color:var(--bg);cursor:pointer;transition:all .2s}.form-btn:hover{box-shadow:0 8px 24px rgba(45,212,191,.3)}
+.dash{display:none;padding:32px 0 80px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:18px}
+.stat-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--f);font-weight:600;margin-bottom:4px}
+.stat-val{font-size:28px;font-weight:800;font-family:var(--mono)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.card{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:18px}
+.card-title{font-family:var(--f);font-size:14px;font-weight:700;margin-bottom:14px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{font-size:11px;color:var(--txt2);width:70px;flex-shrink:0;font-family:var(--mono)}
+.bar-track{flex:1;height:8px;border-radius:4px;background:var(--brd);overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.bar-val{font-size:11px;color:var(--txt3);width:36px;text-align:right;font-family:var(--mono)}
+.section-title{font-family:var(--f);font-size:18px;font-weight:700;margin:24px 0 14px}
+.table-wrap{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:12px 16px;font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--f);font-weight:600;border-bottom:1px solid var(--brd);background:var(--bg3)}
+td{padding:10px 16px;font-size:12px;border-bottom:1px solid var(--brd);font-family:var(--mono)}
+tr:last-child td{border-bottom:none}
+.empty{text-align:center;padding:40px;color:var(--txt3);font-size:14px;font-family:var(--f2)}
+@media(max-width:768px){.stat-grid{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.table-wrap{overflow-x:auto}table{min-width:500px}}
+</style>
+</head>
+<body>
+<div class="header"><div class="container"><div class="h-inner"><a href="/" class="logo"><div class="logo-mark">V</div><span class="logo-text">VitalWealth</span></a><div class="nav-links"><a href="/admin.html">Waitlist</a><a href="/" id="logoutBtn" style="display:none" onclick="location.reload()">Logout</a></div></div></div></div>
+<div class="container">
+<div class="login-wrap" id="loginWrap">
+<div class="login-box">
+<h2>Analytics Dashboard</h2>
+<p>Enter password to view analytics</p>
+<input type="password" class="form-input" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+<button class="form-btn" onclick="doLogin()">Access Analytics</button>
+</div>
+</div>
+<div class="dash" id="dash">
+<div class="stat-grid">
+<div class="stat"><div class="stat-label">Total Views</div><div class="stat-val" id="sViews">—</div></div>
+<div class="stat"><div class="stat-label">Unique Sessions</div><div class="stat-val" id="sSessions" style="color:var(--teal)">—</div></div>
+<div class="stat"><div class="stat-label">Today</div><div class="stat-val" id="sToday" style="color:var(--violet)">—</div></div>
+<div class="stat"><div class="stat-label">Avg Duration</div><div class="stat-val" id="sDuration" style="color:var(--amber)">—</div></div>
+</div>
+<div class="grid2">
+<div class="card"><div class="card-title">Devices</div><div id="deviceBars"></div></div>
+<div class="card"><div class="card-title">Browsers</div><div id="browserBars"></div></div>
+<div class="card"><div class="card-title">Pages</div><div id="pageBars"></div></div>
+<div class="card"><div class="card-title">Referrers</div><div id="refBars"></div></div>
+</div>
+<div class="section-title">Recent Visits</div>
+<div class="table-wrap"><table><thead><tr><th>Path</th><th>Device</th><th>Browser</th><th>Referrer</th><th>Duration</th><th>Time</th></tr></thead><tbody id="tableBody"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table></div>
+</div>
+</div>
+<script>
+const SB='https://qmnfoqufgupixgugaiom.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjc2MjcsImV4cCI6MjA4NjkwMzYyN30.gWJQeozdhUDRbKHTrJnsYywqsseyElnZjVV_o7tUERU';
+const PW='vitalwealth2025';
+
+function doLogin(){
+  if(document.getElementById('pwInput').value===PW){
+    document.getElementById('loginWrap').style.display='none';
+    document.getElementById('dash').style.display='block';
+    document.getElementById('logoutBtn').style.display='inline';
+    loadData();
+  }else{alert('Wrong password')}
+}
+
+function makeBars(el,data,color){
+  const max=Math.max(...Object.values(data),1);
+  el.innerHTML=Object.entries(data).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${v/max*100}%;background:${color}"></div></div><div class="bar-val">${v}</div></div>`).join('');
+}
+
+async function loadData(){
+  try{
+    const r=await fetch(SB+'/rest/v1/page_views?select=*&order=visited_at.desc&limit=500',{headers:{'apikey':SK,'Authorization':'Bearer '+SK}});
+    const data=await r.json();
+    const now=new Date();const today=now.toISOString().split('T')[0];
+    const sessions=new Set(data.map(d=>d.session_id)).size;
+    const todayViews=data.filter(d=>d.visited_at&&d.visited_at.startsWith(today)).length;
+    const durations=data.filter(d=>d.duration_seconds&&d.duration_seconds>0).map(d=>d.duration_seconds);
+    const avgDur=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;
+    document.getElementById('sViews').textContent=data.length;
+    document.getElementById('sSessions').textContent=sessions;
+    document.getElementById('sToday').textContent=todayViews;
+    document.getElementById('sDuration').textContent=avgDur+'s';
+    // Breakdowns
+    const devices={},browsers={},pages={},refs={};
+    data.forEach(d=>{
+      devices[d.device||'unknown']=(devices[d.device||'unknown']||0)+1;
+      browsers[d.browser||'unknown']=(browsers[d.browser||'unknown']||0)+1;
+      pages[d.path||'/']=(pages[d.path||'/']||0)+1;
+      refs[d.referrer||'direct']=(refs[d.referrer||'direct']||0)+1;
+    });
+    makeBars(document.getElementById('deviceBars'),devices,'var(--teal)');
+    makeBars(document.getElementById('browserBars'),browsers,'var(--violet)');
+    makeBars(document.getElementById('pageBars'),pages,'var(--emerald)');
+    makeBars(document.getElementById('refBars'),refs,'var(--amber)');
+    // Table
+    const tb=document.getElementById('tableBody');
+    const recent=data.filter(d=>!d.session_id?.endsWith('_dur')).slice(0,30);
+    if(!recent.length){tb.innerHTML='<tr><td colspan="6" class="empty">No data yet</td></tr>';return}
+    tb.innerHTML=recent.map(d=>{
+      const time=d.visited_at?new Date(d.visited_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+      const dur=d.duration_seconds?d.duration_seconds+'s':'—';
+      return `<tr><td>${d.path||'/'}</td><td>${d.device||'—'}</td><td>${d.browser||'—'}</td><td>${d.referrer||'direct'}</td><td>${dur}</td><td style="color:var(--txt3)">${time}</td></tr>`;
+    }).join('');
+  }catch(e){document.getElementById('tableBody').innerHTML='<tr><td colspan="6" class="empty">Error loading data</td></tr>'}
+}
+</script>
+</body>
+</html>
