@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give Us Feedback — VitalWealth</title>
+<meta name="description" content="Help shape VitalWealth — the Wealth-Health Synergy platform. Share your feedback in 2 minutes.">
+<meta property="og:title" content="VitalWealth wants your feedback!">
+<meta property="og:description" content="Help us build the future of Wealth-Health synergy. Quick 2-min survey.">
+<meta property="og:url" content="https://vitalwealth.app/feedback.html">
+<meta property="og:image" content="https://vitalwealth.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0f1a">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1a;--bg2:#111827;--bg3:#1a2234;--bg4:#243044;--teal:#2dd4bf;--teal-d:rgba(45,212,191,.1);--teal-m:rgba(45,212,191,.2);--emerald:#34d399;--violet:#a78bfa;--vi-d:rgba(167,139,250,.1);--rose:#fb7185;--ro-d:rgba(251,113,133,.1);--amber:#fbbf24;--am-d:rgba(251,191,36,.1);--txt:#f1f5f9;--txt2:#94a3b8;--txt3:#475569;--brd:rgba(255,255,255,.06);--brd2:rgba(255,255,255,.1);--f:'Sora',sans-serif;--f2:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:var(--f2);background:var(--bg);color:var(--txt);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 50% 40% at 30% 20%,rgba(45,212,191,.05) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 70% 80%,rgba(167,139,250,.04) 0%,transparent 60%)}
+.container{max-width:640px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.header{padding:20px 0;border-bottom:1px solid var(--brd)}.header .container{max-width:640px}
+.h-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--txt)}.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal),var(--emerald));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-weight:800;font-size:16px;color:var(--bg)}.logo-text{font-family:var(--f);font-weight:700;font-size:16px}
+.back{color:var(--txt2);text-decoration:none;font-size:13px;font-weight:500}.back:hover{color:var(--teal)}
+
+.hero{padding:48px 0 32px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-d);border:1px solid var(--teal-m);padding:5px 16px;border-radius:100px;font-size:11px;font-weight:600;color:var(--teal);font-family:var(--f);margin-bottom:16px}
+.hero h1{font-family:var(--f);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.hero p{color:var(--txt2);font-size:15px;max-width:460px;margin:0 auto}
+.hero-time{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:var(--txt3);font-family:var(--mono)}
+
+.progress-bar{height:4px;background:var(--brd);border-radius:2px;margin:0 0 32px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--emerald));border-radius:2px;transition:width .5s cubic-bezier(.22,1,.36,1);width:0}
+
+.section{margin-bottom:28px;animation:fadeIn .4s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-size:10px;color:var(--teal);font-family:var(--mono);font-weight:600;margin-bottom:4px}
+.q-label{font-family:var(--f);font-size:16px;font-weight:700;margin-bottom:4px}
+.q-desc{font-size:13px;color:var(--txt3);margin-bottom:12px}
+
+.input{width:100%;padding:14px 16px;background:var(--bg2);border:1px solid var(--brd);border-radius:12px;color:var(--txt);font-size:14px;font-family:var(--f2);outline:none;transition:border-color .2s}
+.input:focus{border-color:var(--teal)}
+.input::placeholder{color:var(--txt3)}
+textarea.input{min-height:90px;resize:vertical}
+
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.opt{padding:10px 18px;background:var(--bg2);border:1px solid var(--brd);border-radius:10px;font-size:13px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all .2s;font-family:var(--f);user-select:none}
+.opt:hover{border-color:var(--brd2);color:var(--txt)}
+.opt.selected{background:var(--teal-d);border-color:var(--teal-m);color:var(--teal)}
+.opt input{display:none}
+
+/* Excitement scale */
+.scale{display:flex;gap:6px;flex-wrap:wrap}
+.scale-item{width:48px;height:48px;border-radius:12px;background:var(--bg2);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--txt2)}
+.scale-item:hover{border-color:var(--brd2);color:var(--txt)}
+.scale-item.selected{border-color:var(--teal);color:var(--teal);background:var(--teal-d)}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-top:6px;font-family:var(--f)}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.submit-btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--teal),var(--emerald));font-family:var(--f);font-weight:700;font-size:16px;color:var(--bg);cursor:pointer;transition:all .2s;margin-top:12px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(45,212,191,.3)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-btn:active{transform:scale(.98)}
+
+.success-screen{display:none;text-align:center;padding:80px 0}
+.success-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--emerald));display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;animation:scaleIn .5s cubic-bezier(.16,1,.3,1)}
+@keyframes scaleIn{from{transform:scale(0)}to{transform:scale(1)}}
+.success-screen h2{font-family:var(--f);font-size:28px;font-weight:800;margin-bottom:8px}
+.success-screen p{color:var(--txt2);font-size:15px;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto}
+.success-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.slink{padding:12px 24px;border-radius:12px;font-family:var(--f);font-weight:600;font-size:13px;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.slink-primary{background:linear-gradient(135deg,var(--teal),var(--emerald));color:var(--bg)}
+.slink-ghost{background:var(--bg2);border:1px solid var(--brd);color:var(--txt2)}
+.slink:hover{transform:translateY(-2px)}
+
+footer{padding:32px 0;border-top:1px solid var(--brd);text-align:center;font-size:12px;color:var(--txt3);margin-top:40px}
+
+@media(max-width:500px){.hero h1{font-size:26px}.row2{grid-template-columns:1fr}.scale-item{width:40px;height:40px;font-size:14px}}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="header"><div class="container"><div class="h-inner"><a href="/" class="logo"><div class="logo-mark">V</div><span class="logo-text">VitalWealth</span></a><a href="/" class="back">← Back</a></div></div></div>
+
+<div class="container">
+<div class="hero">
+<div class="hero-badge">📋 Help Shape VitalWealth</div>
+<h1>We'd love your feedback</h1>
+<p>We're building something new — a platform that links trading profits with your biometric wellness. Your input shapes what we build next.</p>
+<div class="hero-time">⏱ Takes ~2 minutes</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div id="formWrap">
+<!-- Q1 -->
+<div class="section">
+<div class="q-num">01 / 08</div>
+<div class="q-label">What's your name?</div>
+<div class="q-desc">Optional — we just want to know who we're talking to</div>
+<input type="text" class="input" id="fName" placeholder="Your name">
+</div>
+
+<!-- Q2 -->
+<div class="section">
+<div class="q-num">02 / 08</div>
+<div class="q-label">Email address</div>
+<div class="q-desc">So we can follow up and send you early access</div>
+<input type="email" class="input" id="fEmail" placeholder="you@example.com">
+</div>
+
+<!-- Q3 -->
+<div class="section">
+<div class="q-num">03 / 08</div>
+<div class="q-label">Which best describes you?</div>
+<div class="options" id="fRole">
+<label class="opt"><input type="radio" name="role" value="crypto_trader">Crypto Trader</label>
+<label class="opt"><input type="radio" name="role" value="biohacker">Biohacker / Wellness</label>
+<label class="opt"><input type="radio" name="role" value="investor">Investor</label>
+<label class="opt"><input type="radio" name="role" value="developer">Developer</label>
+<label class="opt"><input type="radio" name="role" value="curious">Just Curious</label>
+</div>
+</div>
+
+<!-- Q4 -->
+<div class="section">
+<div class="q-num">04 / 08</div>
+<div class="q-label">How excited are you about this concept?</div>
+<div class="q-desc">Trading bot profits → biometric monitoring → dopamine audio reward</div>
+<div class="scale" id="fExcitement">
+<div class="scale-item" data-v="1">1</div>
+<div class="scale-item" data-v="2">2</div>
+<div class="scale-item" data-v="3">3</div>
+<div class="scale-item" data-v="4">4</div>
+<div class="scale-item" data-v="5">5</div>
+<div class="scale-item" data-v="6">6</div>
+<div class="scale-item" data-v="7">7</div>
+<div class="scale-item" data-v="8">8</div>
+<div class="scale-item" data-v="9">9</div>
+<div class="scale-item" data-v="10">10</div>
+</div>
+<div class="scale-labels"><span>Not interested</span><span>Super excited</span></div>
+</div>
+
+<!-- Q5 -->
+<div class="section">
+<div class="q-num">05 / 08</div>
+<div class="q-label">Which feature excites you most?</div>
+<div class="options" id="fFeature">
+<label class="opt"><input type="radio" name="feature" value="trading_bot">📈 Algorithmic Trading Bot</label>
+<label class="opt"><input type="radio" name="feature" value="biometrics">❤️ Biometric Health Bridge</label>
+<label class="opt"><input type="radio" name="feature" value="dopamine">🎵 Dopamine Audio Engine</label>
+<label class="opt"><input type="radio" name="feature" value="kill_switch">⚡ Remote Kill Switch</label>
+<label class="opt"><input type="radio" name="feature" value="dashboard">📊 Unified Dashboard</label>
+<label class="opt"><input type="radio" name="feature" value="all">🔄 The Whole Loop Together</label>
+</div>
+</div>
+
+<!-- Q6 -->
+<div class="section">
+<div class="q-num">06 / 08</div>
+<div class="q-label">Would you pay for this?</div>
+<div class="options" id="fPay">
+<label class="opt"><input type="radio" name="pay" value="yes_monthly">Yes — monthly subscription</label>
+<label class="opt"><input type="radio" name="pay" value="yes_yearly">Yes — annual plan (cheaper)</label>
+<label class="opt"><input type="radio" name="pay" value="yes_lifetime">Yes — one-time lifetime</label>
+<label class="opt"><input type="radio" name="pay" value="free_only">No — free only</label>
+<label class="opt"><input type="radio" name="pay" value="need_more_info">Need more info first</label>
+</div>
+</div>
+
+<!-- Q7 -->
+<div class="section">
+<div class="q-num">07 / 08</div>
+<div class="q-label">What's your biggest concern?</div>
+<div class="q-desc">Be honest — it helps us build something better</div>
+<textarea class="input" id="fConcerns" placeholder="e.g. Is the trading bot safe? How is my health data protected? Will it actually work?"></textarea>
+</div>
+
+<!-- Q8 -->
+<div class="section">
+<div class="q-num">08 / 08</div>
+<div class="q-label">Any feature you wish we'd add?</div>
+<textarea class="input" id="fSuggestions" placeholder="e.g. Support for more exchanges, meditation integration, social sharing..."></textarea>
+</div>
+
+<!-- Hidden: referral -->
+<input type="hidden" id="fRef" value="">
+
+<button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback →</button>
+</div>
+
+<div class="success-screen" id="successScreen">
+<div class="success-icon">🎉</div>
+<h2>Thank you!</h2>
+<p>Your feedback is incredibly valuable. We're building this for people like you.</p>
+<div class="success-links">
+<a href="/demo.html" class="slink slink-primary">Try the Demo →</a>
+<a href="/" class="slink slink-ghost">Back to Home</a>
+</div>
+</div>
+</div>
+
+<footer><div class="container">2025 VitalWealth. All rights reserved.</div></footer>
+
+<script>
+const SB='https://qmnfoqufgupixgugaiom.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjc2MjcsImV4cCI6MjA4NjkwMzYyN30.gWJQeozdhUDRbKHTrJnsYywqsseyElnZjVV_o7tUERU';
+
+// Capture referral source from URL
+const params=new URLSearchParams(window.location.search);
+document.getElementById('fRef').value=params.get('ref')||'direct';
+
+// Option selection
+document.querySelectorAll('.options').forEach(g=>{
+  g.querySelectorAll('.opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      g.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
+      o.classList.add('selected');
+      updateProgress();
+    });
+  });
+});
+
+// Scale selection
+document.querySelectorAll('.scale-item').forEach(s=>{
+  s.addEventListener('click',()=>{
+    document.querySelectorAll('.scale-item').forEach(x=>x.classList.remove('selected'));
+    s.classList.add('selected');
+    updateProgress();
+  });
+});
+
+// Progress bar
+function updateProgress(){
+  let filled=0,total=8;
+  if(document.getElementById('fName').value)filled++;
+  if(document.getElementById('fEmail').value)filled++;
+  if(document.querySelector('#fRole .selected'))filled++;
+  if(document.querySelector('.scale-item.selected'))filled++;
+  if(document.querySelector('#fFeature .selected'))filled++;
+  if(document.querySelector('#fPay .selected'))filled++;
+  if(document.getElementById('fConcerns').value)filled++;
+  if(document.getElementById('fSuggestions').value)filled++;
+  document.getElementById('progress').style.width=(filled/total*100)+'%';
+}
+document.querySelectorAll('.input').forEach(i=>i.addEventListener('input',updateProgress));
+
+async function submitFeedback(){
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Submitting...';
+
+  const data={
+    name:document.getElementById('fName').value||null,
+    email:document.getElementById('fEmail').value||null,
+    role:document.querySelector('input[name="role"]:checked')?.value||null,
+    excitement:document.querySelector('.scale-item.selected')?.dataset.v?parseInt(document.querySelector('.scale-item.selected').dataset.v):null,
+    most_interesting:document.querySelector('input[name="feature"]:checked')?.value||null,
+    would_pay:document.querySelector('input[name="pay"]:checked')?.value||null,
+    concerns:document.getElementById('fConcerns').value||null,
+    suggestions:document.getElementById('fSuggestions').value||null,
+    referral_source:document.getElementById('fRef').value||'direct',
+    submitted_at:new Date().toISOString()
+  };
+
+  try{
+    const r=await fetch(SB+'/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':'Bearer '+SK,'Prefer':'return=minimal'},body:JSON.stringify(data)});
+    if(!r.ok)throw new Error('Failed');
+
+    // Also add to waitlist if email provided
+    if(data.email){
+      fetch(SB+'/rest/v1/waitlist',{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':'Bearer '+SK,'Prefer':'return=minimal'},body:JSON.stringify({email:data.email.toLowerCase().trim(),name:data.name,interests:['feedback'],signed_up_at:new Date().toISOString()})}).catch(()=>{});
+    }
+
+    document.getElementById('formWrap').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+    document.querySelector('.progress-bar').style.display='none';
+  }catch(e){
+    btn.disabled=false;btn.textContent='Submit Feedback →';
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// Analytics
+(function(){var sid=Math.random().toString(36).substr(2,12)+Date.now().toString(36);var st=Date.now(),w=window.innerWidth;var d=w<768?'mobile':w<1024?'tablet':'desktop';var ua=navigator.userAgent,b='other';if(ua.indexOf('Chrome')>-1&&ua.indexOf('Edg')===-1)b='chrome';else if(ua.indexOf('Safari')>-1&&ua.indexOf('Chrome')===-1)b='safari';else if(ua.indexOf('Firefox')>-1)b='firefox';else if(ua.indexOf('Edg')>-1)b='edge';var ref=document.referrer?new URL(document.referrer).hostname:'direct';if(ref===window.location.hostname)ref='direct';fetch(SB+'/rest/v1/page_views',{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':'Bearer '+SK,'Prefer':'return=minimal'},body:JSON.stringify({path:window.location.pathname,referrer:ref,device:d,browser:b,session_id:sid,visited_at:new Date().toISOString()})}).catch(function(){});function dur(){var s=Math.round((Date.now()-st)/1000);if(s<2)return;var data=JSON.stringify({path:window.location.pathname,referrer:ref,device:d,browser:b,session_id:sid+'_dur',duration_seconds:s,visited_at:new Date().toISOString()});if(navigator.sendBeacon){navigator.sendBeacon(SB+'/rest/v1/page_views?apikey='+SK,new Blob([data],{type:'application/json'}))}}document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')dur()});window.addEventListener('beforeunload',dur)})();
+</script>
+</body>
+</html>
