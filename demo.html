@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VitalWealth — Interactive Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0e14;--bg2:#12151e;--bg3:#191d2a;--bg4:#222838;--em:#00e68a;--em-d:rgba(0,230,138,.08);--em-m:rgba(0,230,138,.18);--vi:#a855f7;--vi-d:rgba(168,85,247,.08);--vi-m:rgba(168,85,247,.18);--cy:#22d3ee;--cy-d:rgba(34,211,238,.08);--ro:#f43f5e;--ro-d:rgba(244,63,94,.08);--am:#f59e0b;--am-d:rgba(245,158,11,.08);--txt:#eef2ff;--txt2:#8b95b0;--txt3:#4a5270;--brd:rgba(255,255,255,.05);--brd2:rgba(255,255,255,.08);--f:'Outfit',sans-serif;--f2:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:var(--f2);background:#080a10;color:var(--txt);display:flex;align-items:center;justify-content:center}
+::selection{background:var(--em-m);color:var(--em)}
+.app{width:100%;height:100%;max-width:430px;max-height:932px;position:relative;overflow:hidden;background:var(--bg)}
+@media(min-width:431px){.app{height:92vh;border-radius:28px;border:1px solid var(--brd2);box-shadow:0 40px 120px rgba(0,0,0,.6)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes lockGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(168,85,247,.3))}50%{filter:drop-shadow(0 0 18px rgba(168,85,247,.5))}}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,138,.35)}70%{box-shadow:0 0 0 8px rgba(0,230,138,0)}}
+@keyframes waveAnim{0%,100%{height:4px;opacity:.3}50%{height:16px;opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.screen.active{opacity:1;pointer-events:all}.screen::-webkit-scrollbar{width:0}
+.sp{padding:10px 16px 110px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px}
+.top-left{display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--em),#00cc7a);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--bg)}
+.top-greet{font-size:9px;color:var(--txt3);font-family:var(--mono)}.top-name{font-size:15px;font-weight:700}
+.top-right{display:flex;gap:8px}
+.ib{width:36px;height:36px;border-radius:10px;background:var(--bg3);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;position:relative}
+.badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;border-radius:50%;background:var(--vi);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid var(--bg)}
+.card{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:16px;margin-bottom:10px}
+.card-label{font-size:9px;color:var(--txt3);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sec{font-size:14px;font-weight:700;margin:16px 0 8px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;padding:3px 10px;border-radius:100px;font-family:var(--mono)}
+.tag-em{color:var(--em);background:var(--em-d)}.tag-vi{color:var(--vi);background:var(--vi-d)}.tag-am{color:var(--am);background:var(--am-d)}.tag-ro{color:var(--ro);background:var(--ro-d)}.tag-cy{color:var(--cy);background:var(--cy-d)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--em);animation:livePulse 2s infinite;display:inline-block}
+.big-num{font-size:28px;font-weight:800;letter-spacing:-.03em;font-family:var(--mono)}
+.stats3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}
+.stat3{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:10px;text-align:center}
+.stat3-val{font-size:15px;font-weight:700;font-family:var(--mono)}.stat3-lbl{font-size:7px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;font-family:var(--mono);margin-top:1px}
+.mini-chart{display:flex;align-items:flex-end;gap:2px;height:40px;margin:8px 0}
+.mc-bar{flex:1;border-radius:2px 2px 0 0;min-height:2px}
+.toggle{width:48px;height:26px;border-radius:13px;position:relative;cursor:pointer;transition:background .3s}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .3s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle.on{background:var(--em)}.toggle.on::after{transform:translateX(22px)}.toggle.off{background:var(--bg4)}
+.trade{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--brd)}.trade:last-child{border-bottom:none}
+.trade-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.sleep-bar{display:flex;height:28px;border-radius:8px;overflow:hidden;margin:8px 0}
+.sleep-seg{display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:600;font-family:var(--mono);color:var(--bg)}
+.sleep-legend{display:flex;gap:10px;margin:6px 0;flex-wrap:wrap}
+.sleep-leg{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--txt2);font-family:var(--mono)}
+.sleep-dot{width:8px;height:8px;border-radius:3px}
+.wave-wrap{height:36px;background:var(--bg3);border-radius:8px;margin:8px 0;display:flex;align-items:center;justify-content:center;gap:2px}
+.wb{width:3px;border-radius:1px;background:var(--vi);animation:waveAnim 1.4s ease-in-out infinite}
+.wb:nth-child(2){animation-delay:.12s}.wb:nth-child(3){animation-delay:.24s}.wb:nth-child(4){animation-delay:.36s}.wb:nth-child(5){animation-delay:.48s}.wb:nth-child(6){animation-delay:.6s}.wb:nth-child(7){animation-delay:.72s}.wb:nth-child(8){animation-delay:.84s}
+.dev-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)}.dev-row:last-child{border-bottom:none}
+.notif{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--brd)}
+.ni-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ni-content{flex:1}.ni-title{font-size:12px;font-weight:600;margin-bottom:1px}.ni-desc{font-size:10px;color:var(--txt2);line-height:1.4}.ni-time{font-size:8px;color:var(--txt3);margin-top:2px;font-family:var(--mono)}
+.set-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--brd)}.set-row:last-child{border-bottom:none}
+.set-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.cta{background:linear-gradient(135deg,var(--em-d),var(--vi-d));border:1px solid var(--em-m);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+.cta h3{font-size:14px;font-weight:700;margin-bottom:3px}.cta p{font-size:10px;color:var(--txt2);margin-bottom:10px}
+.cta-btn{display:inline-flex;padding:10px 22px;border-radius:11px;background:linear-gradient(135deg,var(--em),#00cc7a);color:var(--bg);font-weight:700;font-size:12px;border:none;cursor:pointer;text-decoration:none}
+.tabbar{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));background:rgba(12,14,20,.94);backdrop-filter:blur(20px);border-top:1px solid var(--brd);z-index:50}
+.tab{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 8px;cursor:pointer}
+.tab-icon{font-size:17px;color:var(--txt3);transition:color .2s}
+.tab span{font-size:8px;font-weight:500;color:var(--txt3);transition:color .2s}
+.tab.active .tab-icon{color:var(--em)}.tab.active span{color:var(--em)}
+.onb{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px 24px;height:100%}
+.onb-logo{width:68px;height:68px;border-radius:18px;background:linear-gradient(135deg,var(--em),#00cc7a);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px;color:var(--bg);margin-bottom:24px;animation:scaleIn .5s ease both}
+.onb h1{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;animation:fadeIn .5s ease both .15s}
+.onb h1 .em{color:var(--em)}.onb h1 .vi{color:var(--vi)}
+.onb>p{color:var(--txt2);font-size:13px;margin-bottom:28px;max-width:300px;animation:fadeIn .5s ease both .25s}
+.onb-feats{display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px;margin-bottom:28px}
+.onb-feat{display:flex;align-items:center;gap:10px;text-align:left;animation:fadeIn .5s ease both}
+.onb-feat:nth-child(1){animation-delay:.3s}.onb-feat:nth-child(2){animation-delay:.4s}.onb-feat:nth-child(3){animation-delay:.5s}.onb-feat:nth-child(4){animation-delay:.6s}
+.onb-fi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.onb-ft{font-size:12px;font-weight:600}.onb-fs{font-size:9px;color:var(--txt3)}
+.onb-btn{width:100%;max-width:280px;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--em),#00cc7a);color:var(--bg);font-weight:700;font-size:14px;cursor:pointer;animation:fadeIn .5s ease both .65s}
+.onb-skip{margin-top:12px;font-size:11px;color:var(--txt3);cursor:pointer;background:none;border:none;animation:fadeIn .5s ease both .75s}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
+.modal-title{font-size:17px;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt2);font-size:14px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- ONBOARDING -->
+<div class="screen active" id="scr-onboard">
+<div class="onb">
+<div class="onb-logo">V</div>
+<h1>Your <span class="vi">Sleep</span> Unlocks Your <span class="em">Wealth</span></h1>
+<p>The first Solana trading bot that vaults profits until your body recovers through REM sleep.</p>
+<div class="onb-feats">
+<div class="onb-feat"><div class="onb-fi" style="background:var(--em-d)">🤖</div><div><div class="onb-ft">Whale Strategy</div><div class="onb-fs">SOL/USDT · 24/7 · AWS Tokyo</div></div></div>
+<div class="onb-feat"><div class="onb-fi" style="background:var(--vi-d)">🔐</div><div><div class="onb-ft">Biological Vault</div><div class="onb-fs">Profits locked until REM confirmed</div></div></div>
+<div class="onb-feat"><div class="onb-fi" style="background:var(--vi-d)">🌙</div><div><div class="onb-ft">REM Harvest</div><div class="onb-fs">Sleep → Unlock → Wake up rewarded</div></div></div>
+<div class="onb-feat"><div class="onb-fi" style="background:var(--em-d)">🎵</div><div><div class="onb-ft">Dopamine Engine</div><div class="onb-fs">Profit + Calm = Audio Reward</div></div></div>
+</div>
+<button class="onb-btn" onclick="goTo('dashboard')">Enter Dashboard →</button>
+<button class="onb-skip" onclick="window.open('https://vitalwealth.app','_blank')">← Back to vitalwealth.app</button>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="scr-dashboard">
+<div class="top"><div class="top-left"><div class="av">R</div><div><div class="top-greet">REM HARVEST</div><div class="top-name">Dashboard</div></div></div><div class="top-right"><div class="ib" onclick="goTo('notifications')">&#x1F514;<div class="badge">4</div></div><div class="ib" onclick="goTo('settings')">&#x2699;&#xFE0F;</div></div></div>
+<div class="sp">
+<div class="card" style="background:linear-gradient(135deg,var(--vi-d),rgba(168,85,247,.02));border-color:var(--vi-m)">
+<div class="card-head"><div class="card-label">Biological Vault</div><div class="tag tag-vi">&#x1F512; Locked</div></div>
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div><div class="big-num" style="color:var(--em)" id="dv">+$1,247.80</div><div style="font-size:10px;color:var(--txt3);font-family:var(--mono)">Awaiting REM sleep to unlock</div></div>
+<div style="text-align:center"><div style="font-size:32px;animation:lockGlow 3s ease-in-out infinite">&#x1F512;</div><div style="font-size:8px;color:var(--vi);font-family:var(--mono)">VAULTED</div></div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><div class="card-label">Bot P&amp;L &middot; SOL/USDT</div><div><span class="live-dot"></span> <span class="tag tag-em">LIVE</span></div></div>
+<div class="big-num" style="color:var(--em);font-size:22px" id="dp">+$1,247.80</div>
+<div style="font-size:10px;color:var(--em);font-family:var(--mono);margin-top:2px">+8.3% today &middot; 14 trades</div>
+<div class="mini-chart" id="mc"></div>
+</div>
+
+<div class="card" style="background:linear-gradient(135deg,var(--em-d),rgba(0,230,138,.02));border-color:var(--em-m)">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div><div style="font-size:12px;font-weight:600">Kill Switch</div><div style="font-size:9px;color:var(--txt2);font-family:var(--mono)" id="ks">Bot active &middot; AWS Tokyo &middot; 12ms</div></div>
+<div class="toggle on" id="kt" onclick="toggleKill()"></div>
+</div></div>
+
+<div class="stats3">
+<div class="stat3"><div class="stat3-val" style="color:var(--vi)" id="drem">2</div><div class="stat3-lbl">REM Cycles</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--em)" id="dhr">72</div><div class="stat3-lbl">Heart Rate</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--cy)" id="dhrv">65ms</div><div class="stat3-lbl">HRV</div></div>
+</div>
+
+<div class="sec">Recent Trades</div>
+<div class="card" style="padding:6px 14px">
+<div class="trade"><div class="trade-icon" style="background:var(--em-d)">&#x1F4C8;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">SOL/USDT</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">2 min ago</div></div><div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--em);font-family:var(--mono)">+$89.40</div><div style="font-size:8px;color:var(--txt3)">Vault</div></div></div>
+<div class="trade"><div class="trade-icon" style="background:var(--em-d)">&#x1F4C8;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">SOL/USDT</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">18 min ago</div></div><div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--em);font-family:var(--mono)">+$142.20</div><div style="font-size:8px;color:var(--txt3)">Vault</div></div></div>
+<div class="trade"><div class="trade-icon" style="background:var(--ro-d)">&#x1F4C9;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">SOL/USDT</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">34 min ago</div></div><div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--ro);font-family:var(--mono)">-$18.60</div><div style="font-size:8px;color:var(--txt3)">Loss</div></div></div>
+<div class="trade"><div class="trade-icon" style="background:var(--em-d)">&#x1F4C8;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">SOL/USDT</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">1 hr ago</div></div><div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--em);font-family:var(--mono)">+$203.50</div><div style="font-size:8px;color:var(--txt3)">Vault</div></div></div>
+</div>
+<div class="cta"><h3>Join the Alpha</h3><p>Be one of 100 pioneers bridging DeFi and Bio-hacking.</p><a href="https://vitalwealth.app" target="_blank" class="cta-btn">Get Early Access</a></div>
+</div></div>
+<!-- VAULT -->
+<div class="screen" id="scr-vault">
+<div class="top"><div class="top-left"><div class="av">R</div><div><div class="top-greet">BIOLOGICAL</div><div class="top-name">Vault</div></div></div></div>
+<div class="sp">
+<div class="card" style="text-align:center;padding:28px 16px;background:linear-gradient(180deg,var(--vi-d),var(--bg2));border-color:var(--vi-m)">
+<div style="font-size:52px;animation:lockGlow 3s ease-in-out infinite;margin-bottom:8px">&#x1F512;</div>
+<div style="font-size:34px;font-weight:800;font-family:var(--mono);color:var(--em)">+$1,247.80</div>
+<div style="font-size:10px;color:var(--vi);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-top:4px">Awaiting REM Sleep</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px"><div class="tag tag-vi">0/1 REM cycles tonight</div></div>
+</div>
+<div class="sec">Sleep Progress</div>
+<div class="card"><div class="card-label">Sleep Stages</div>
+<div class="wave-wrap"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+<div style="font-size:10px;color:var(--txt2);text-align:center;font-family:var(--mono)">Monitoring active - Garmin Venu 3</div></div>
+<div class="sec">Unlock History</div>
+<div class="card" style="padding:6px 14px">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:32px;height:32px;border-radius:10px;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:14px">&#x1F513;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">Yesterday</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">3 REM - 7.2h sleep</div></div><div style="font-size:12px;font-weight:700;color:var(--em);font-family:var(--mono)">+$892.40</div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:32px;height:32px;border-radius:10px;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:14px">&#x1F513;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">2 Days Ago</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">2 REM - 6.8h sleep</div></div><div style="font-size:12px;font-weight:700;color:var(--em);font-family:var(--mono)">+$1,103.20</div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:32px;height:32px;border-radius:10px;background:var(--am-d);display:flex;align-items:center;justify-content:center;font-size:14px">&#x26A0;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">3 Days Ago</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">0 REM - 4.1h sleep</div></div><div style="font-size:12px;font-weight:700;color:var(--am);font-family:var(--mono)">HELD</div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0"><div style="width:32px;height:32px;border-radius:10px;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:14px">&#x1F513;</div><div style="flex:1"><div style="font-size:11px;font-weight:600">4 Days Ago</div><div style="font-size:8px;color:var(--txt3);font-family:var(--mono)">4 REM - 8.1h sleep</div></div><div style="font-size:12px;font-weight:700;color:var(--em);font-family:var(--mono)">+$756.80</div></div>
+</div>
+<div class="stats3"><div class="stat3"><div class="stat3-val" style="color:var(--em)">$3,999</div><div class="stat3-lbl">Total Harvested</div></div><div class="stat3"><div class="stat3-val" style="color:var(--vi)">11</div><div class="stat3-lbl">REM Unlocks</div></div><div class="stat3"><div class="stat3-val" style="color:var(--am)">1</div><div class="stat3-lbl">Held</div></div></div>
+</div></div>
+<!-- SLEEP -->
+<div class="screen" id="scr-sleep">
+<div class="top"><div class="top-left"><div class="av">R</div><div><div class="top-greet">BIOMETRICS</div><div class="top-name">Sleep</div></div></div></div>
+<div class="sp">
+<div class="card">
+<div class="card-head"><div class="card-label">Last Night</div><div class="tag tag-em">7.2h</div></div>
+<div class="sleep-bar">
+<div class="sleep-seg" style="width:15%;background:var(--cy)">Light</div>
+<div class="sleep-seg" style="width:25%;background:var(--vi)">REM</div>
+<div class="sleep-seg" style="width:20%;background:#6366f1">Deep</div>
+<div class="sleep-seg" style="width:10%;background:var(--cy)">Light</div>
+<div class="sleep-seg" style="width:18%;background:var(--vi)">REM</div>
+<div class="sleep-seg" style="width:12%;background:#6366f1">Deep</div>
+</div>
+<div class="sleep-legend">
+<div class="sleep-leg"><div class="sleep-dot" style="background:var(--vi)"></div>REM 1.8h</div>
+<div class="sleep-leg"><div class="sleep-dot" style="background:#6366f1"></div>Deep 2.1h</div>
+<div class="sleep-leg"><div class="sleep-dot" style="background:var(--cy)"></div>Light 3.3h</div>
+</div></div>
+<div class="stats3">
+<div class="stat3"><div class="stat3-val" style="color:var(--vi)">3</div><div class="stat3-lbl">REM Cycles</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--em)">87</div><div class="stat3-lbl">Recovery</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--cy)">52</div><div class="stat3-lbl">Resting HR</div></div>
+</div>
+<div class="sec">7-Day Trend</div>
+<div class="card"><div class="mini-chart" id="sleepChart"></div>
+<div style="display:flex;justify-content:space-between;font-size:8px;color:var(--txt3);font-family:var(--mono)"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></div>
+<div class="sec">Devices</div>
+<div class="card" style="padding:6px 14px">
+<div class="dev-row"><div style="width:36px;height:36px;border-radius:10px;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:16px">&#x231A;</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Garmin Venu 3</div><div style="font-size:9px;color:var(--em)">Streaming</div></div><div class="tag tag-em">Primary</div></div>
+<div class="dev-row"><div style="width:36px;height:36px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px">&#x231A;</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Apple Watch Ultra</div><div style="font-size:9px;color:var(--txt3)">Available</div></div><div style="padding:5px 12px;border-radius:7px;font-size:9px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2)">Connect</div></div>
+</div></div></div>
+<!-- DOPAMINE -->
+<div class="screen" id="scr-dopamine">
+<div class="top"><div class="top-left"><div class="av">R</div><div><div class="top-greet">DAYTIME MODE</div><div class="top-name">Dopamine Engine</div></div></div></div>
+<div class="sp">
+<div class="card" style="background:linear-gradient(135deg,var(--em-d),rgba(0,230,138,.02));border-color:var(--em-m);text-align:center;padding:20px">
+<div style="font-size:11px;font-weight:700;color:var(--em);margin-bottom:4px">ENGINE STATUS</div>
+<div style="font-size:28px;margin-bottom:4px">&#x1F3B5;</div>
+<div class="tag tag-em" style="font-size:11px;padding:5px 16px">ARMED</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--txt2);padding:8px;background:rgba(0,0,0,.2);border-radius:8px;margin-top:12px">IF (Profit &gt; 0) AND (Stress &lt; 40) = Trigger</div>
+</div>
+<div class="sec">Conditions</div>
+<div class="card" style="padding:6px 14px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--brd)"><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:7px;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:12px">&#x1F4C8;</div><span style="font-size:11px">Trade Profit &gt; $0</span></div><div style="width:22px;height:22px;border-radius:50%;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--em)">&#x2713;</div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--brd)"><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:7px;background:var(--cy-d);display:flex;align-items:center;justify-content:center;font-size:12px">&#x2764;</div><span style="font-size:11px">Stress &lt; 40</span></div><div style="width:22px;height:22px;border-radius:50%;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--em)">&#x2713;</div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--brd)"><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:7px;background:var(--vi-d);display:flex;align-items:center;justify-content:center;font-size:12px">&#x231A;</div><span style="font-size:11px">Watch Connected</span></div><div style="width:22px;height:22px;border-radius:50%;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--em)">&#x2713;</div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0"><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:7px;background:var(--am-d);display:flex;align-items:center;justify-content:center;font-size:12px">&#x1F3A7;</div><span style="font-size:11px">Audio Ready</span></div><div style="width:22px;height:22px;border-radius:50%;background:var(--em-d);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--em)">&#x2713;</div></div>
+</div>
+<div class="stats3">
+<div class="stat3"><div class="stat3-val" style="color:var(--em)">7</div><div class="stat3-lbl">Triggers Today</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--am)">$892</div><div class="stat3-lbl">Profit Sum</div></div>
+<div class="stat3"><div class="stat3-val" style="color:var(--cy)">32</div><div class="stat3-lbl">Avg Stress</div></div>
+</div>
+<div class="sec">Playlist</div>
+<div class="card" style="padding:6px 14px">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--em-d),var(--vi-d));display:flex;align-items:center;justify-content:center;font-size:18px">&#x1F3B6;</div><div style="flex:1"><div style="font-size:12px;font-weight:600">High Vibration State</div><div style="font-size:9px;color:var(--txt3)">432Hz</div></div><div style="font-size:9px;color:var(--txt3);font-family:var(--mono)">3:22</div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--brd)"><div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--vi-d),var(--cy-d));display:flex;align-items:center;justify-content:center;font-size:18px">&#x1F3B5;</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Wealth Frequency</div><div style="font-size:9px;color:var(--txt3)">528Hz</div></div><div style="font-size:9px;color:var(--txt3);font-family:var(--mono)">4:15</div></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0"><div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--cy-d),var(--em-d));display:flex;align-items:center;justify-content:center;font-size:18px">&#x1F9E0;</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Flow State</div><div style="font-size:9px;color:var(--txt3)">Alpha 10Hz</div></div><div style="font-size:9px;color:var(--txt3);font-family:var(--mono)">5:00</div></div>
+</div></div></div>
+<!-- NOTIFICATIONS -->
+<div class="screen" id="scr-notifications">
+<div class="modal-head"><div class="modal-title">Notifications</div><div class="modal-close" onclick="goBack()">&#x2715;</div></div>
+<div>
+<div class="notif"><div class="ni-icon" style="background:var(--vi-d)">&#x1F512;</div><div class="ni-content"><div class="ni-title">Vault Locked</div><div class="ni-desc">$1,247.80 profits moved to vault. Hit REM to unlock.</div><div class="ni-time">2 min ago</div></div></div>
+<div class="notif"><div class="ni-icon" style="background:var(--em-d)">&#x1F3B5;</div><div class="ni-content"><div class="ni-title">Dopamine Triggered</div><div class="ni-desc">+$89.40 profit, stress 24. "High Vibration State" played.</div><div class="ni-time">8 min ago</div></div></div>
+<div class="notif"><div class="ni-icon" style="background:var(--em-d)">&#x1F513;</div><div class="ni-content"><div class="ni-title">Vault Unlocked!</div><div class="ni-desc">3 REM cycles detected. $892.40 released. Good morning!</div><div class="ni-time">6 hours ago</div></div></div>
+<div class="notif"><div class="ni-icon" style="background:var(--cy-d)">&#x1F319;</div><div class="ni-content"><div class="ni-title">REM Cycle #3</div><div class="ni-desc">REM at 4:22 AM, 24 min. Vault threshold met.</div><div class="ni-time">6 hours ago</div></div></div>
+<div class="notif"><div class="ni-icon" style="background:var(--am-d)">&#x2699;</div><div class="ni-content"><div class="ni-title">Bot Health</div><div class="ni-desc">AWS Tokyo - 12ms - All nominal.</div><div class="ni-time">1 hour ago</div></div></div>
+<div class="notif"><div class="ni-icon" style="background:var(--em-d)">&#x1F4CA;</div><div class="ni-content"><div class="ni-title">Daily Summary</div><div class="ni-desc">+$1,247.80, 14 trades, 86% win. Sleep 7.2h, 3 REM.</div><div class="ni-time">This morning</div></div></div>
+</div></div>
+
+<!-- SETTINGS -->
+<div class="screen" id="scr-settings">
+<div class="modal-head"><div class="modal-title">Settings</div><div class="modal-close" onclick="goBack()">&#x2715;</div></div>
+<div class="sp" style="padding-top:0">
+<div style="text-align:center;padding:16px 0"><div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--em),#00cc7a);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--bg);margin:0 auto 10px">R</div><div style="font-size:17px;font-weight:700">Ron the Bon</div><div style="font-size:11px;color:var(--txt2)">Alpha Tester</div></div>
+<div class="sec">Trading Bot</div>
+<div class="card" style="padding:6px 14px">
+<div class="set-row"><div class="set-icon" style="background:var(--em-d)">&#x1F916;</div><div style="flex:1;font-size:12px">Server</div><div style="font-size:10px;color:var(--txt2);font-family:var(--mono)">AWS Tokyo</div></div>
+<div class="set-row"><div class="set-icon" style="background:var(--em-d)">&#x26A1;</div><div style="flex:1;font-size:12px">Kill Switch</div><div style="font-size:10px;color:var(--txt2);font-family:var(--mono)">12ms</div></div>
+</div>
+<div class="sec">REM Harvest</div>
+<div class="card" style="padding:6px 14px">
+<div class="set-row"><div class="set-icon" style="background:var(--vi-d)">&#x1F512;</div><div style="flex:1;font-size:12px">Vault Auto-Lock</div><div class="toggle on"></div></div>
+<div class="set-row"><div class="set-icon" style="background:var(--vi-d)">&#x1F319;</div><div style="flex:1;font-size:12px">REM Threshold</div><div style="font-size:10px;color:var(--txt2);font-family:var(--mono)">1 cycle</div></div>
+</div>
+<div class="sec">Dopamine Engine</div>
+<div class="card" style="padding:6px 14px">
+<div class="set-row"><div class="set-icon" style="background:var(--em-d)">&#x1F3B5;</div><div style="flex:1;font-size:12px">Audio</div><div style="font-size:10px;color:var(--txt2);font-family:var(--mono)">Built-in</div></div>
+<div class="set-row"><div class="set-icon" style="background:var(--em-d)">&#x1F4F3;</div><div style="flex:1;font-size:12px">Haptics</div><div class="toggle on"></div></div>
+</div>
+<div class="sec">Security</div>
+<div class="card" style="padding:6px 14px">
+<div class="set-row"><div class="set-icon" style="background:var(--am-d)">&#x1F510;</div><div style="flex:1;font-size:12px">Encryption</div><div style="font-size:10px;color:var(--txt2);font-family:var(--mono)">AES-256</div></div>
+</div>
+<div class="sec">About</div>
+<div class="card" style="padding:6px 14px">
+<div class="set-row"><div class="set-icon" style="background:var(--bg3)">&#x1F4C4;</div><div style="flex:1;font-size:12px">Privacy Policy</div></div>
+<div class="set-row"><div class="set-icon" style="background:var(--bg3)">&#x1F4CB;</div><div style="flex:1;font-size:12px">Terms</div></div>
+<div class="set-row"><div class="set-icon" style="background:var(--bg3)">&#x2139;</div><div style="flex:1;font-size:12px">Version</div><div style="font-size:10px;color:var(--txt3);font-family:var(--mono)">1.0.0-alpha</div></div>
+</div>
+</div></div>
+
+<!-- TAB BAR -->
+<div class="tabbar">
+<div class="tab active" onclick="goTo('dashboard')"><div class="tab-icon">&#x1F4CA;</div><span>Home</span></div>
+<div class="tab" onclick="goTo('vault')"><div class="tab-icon">&#x1F512;</div><span>Vault</span></div>
+<div class="tab" onclick="goTo('sleep')"><div class="tab-icon">&#x1F319;</div><span>Sleep</span></div>
+<div class="tab" onclick="goTo('dopamine')"><div class="tab-icon">&#x1F3B5;</div><span>Dopamine</span></div>
+</div>
+</div>
+
+<script>
+var cur='onboard',hist=[];
+function goTo(s){if(cur===s)return;hist.push(cur);document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active')});document.getElementById('scr-'+s).classList.add('active');cur=s;document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});var tabs={dashboard:0,vault:1,sleep:2,dopamine:3};if(tabs[s]!==undefined)document.querySelectorAll('.tab')[tabs[s]].classList.add('active');if(s==='dashboard')buildChart();if(s==='sleep')buildSleepChart()}
+function goBack(){if(hist.length){var p=hist.pop();document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active')});document.getElementById('scr-'+p).classList.add('active');cur=p}}
+function toggleKill(){var t=document.getElementById('kt');var s=document.getElementById('ks');if(t.classList.contains('on')){t.classList.remove('on');t.classList.add('off');s.textContent='Bot PAUSED'}else{t.classList.remove('off');t.classList.add('on');s.textContent='Bot active - AWS Tokyo - 12ms'}}
+function buildChart(){var c=document.getElementById('mc');if(!c||c.children.length)return;var v=[24,38,18,42,28,55,32,48,22,45,38,52,42,60];for(var i=0;i<v.length;i++){var b=document.createElement('div');b.className='mc-bar';b.style.height=v[i]/.6+'%';b.style.background=v[i]>30?'var(--em)':'var(--ro)';c.appendChild(b)}}
+function buildSleepChart(){var c=document.getElementById('sleepChart');if(!c||c.children.length)return;var v=[72,68,41,81,75,62,72];for(var i=0;i<v.length;i++){var b=document.createElement('div');b.className='mc-bar';b.style.height=v[i]+'%';b.style.background=v[i]>60?'var(--vi)':'var(--am)';c.appendChild(b)}}
+setInterval(function(){var v=1247.80+Math.random()*40-15;var e=document.getElementById('dv');if(e)e.textContent='+$'+v.toFixed(2);var e2=document.getElementById('dp');if(e2)e2.textContent='+$'+v.toFixed(2);var hr=Math.floor(68+Math.random()*8);var e3=document.getElementById('dhr');if(e3)e3.textContent=hr;var hrv=Math.floor(60+Math.random()*10);var e4=document.getElementById('dhrv');if(e4)e4.textContent=hrv+'ms'},3000);
+(function(){var SB='https://qmnfoqufgupixgugaiom.supabase.co';var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjc2MjcsImV4cCI6MjA4NjkwMzYyN30.gWJQeozdhUDRbKHTrJnsYywqsseyElnZjVV_o7tUERU';var sid=Math.random().toString(36).substr(2,12)+Date.now().toString(36);var st=Date.now(),w=window.innerWidth;var d=w<768?'mobile':w<1024?'tablet':'desktop';var ua=navigator.userAgent,b='other';if(ua.indexOf('Chrome')>-1&&ua.indexOf('Edg')===-1)b='chrome';else if(ua.indexOf('Safari')>-1&&ua.indexOf('Chrome')===-1)b='safari';else if(ua.indexOf('Firefox')>-1)b='firefox';else if(ua.indexOf('Edg')>-1)b='edge';var ref=document.referrer?new URL(document.referrer).hostname:'direct';if(ref===window.location.hostname)ref='direct';fetch(SB+'/rest/v1/page_views',{method:'POST',headers:{'Content-Type':'application/json','apikey':SK,'Authorization':'Bearer '+SK,'Prefer':'return=minimal'},body:JSON.stringify({path:window.location.pathname,referrer:ref,device:d,browser:b,session_id:sid,visited_at:new Date().toISOString()})}).catch(function(){});function dur(){var s=Math.round((Date.now()-st)/1000);if(s<2)return;var data=JSON.stringify({path:window.location.pathname,referrer:ref,device:d,browser:b,session_id:sid+'_dur',duration_seconds:s,visited_at:new Date().toISOString()});if(navigator.sendBeacon){navigator.sendBeacon(SB+'/rest/v1/page_views?apikey='+SK,new Blob([data],{type:'application/json'}))}}document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')dur()});window.addEventListener('beforeunload',dur)})();
+</script>
+</body>
+</html>
