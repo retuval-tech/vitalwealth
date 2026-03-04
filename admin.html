@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — VitalWealth</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1a;--bg2:#111827;--bg3:#1a2234;--bg4:#243044;--teal:#2dd4bf;--teal-d:rgba(45,212,191,.1);--teal-m:rgba(45,212,191,.2);--emerald:#34d399;--violet:#a78bfa;--vi-d:rgba(167,139,250,.1);--rose:#fb7185;--ro-d:rgba(251,113,133,.1);--amber:#fbbf24;--am-d:rgba(251,191,36,.1);--txt:#f1f5f9;--txt2:#94a3b8;--txt3:#475569;--brd:rgba(255,255,255,.06);--brd2:rgba(255,255,255,.1);--f:'Sora',sans-serif;--f2:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--f2);background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+.container{max-width:1060px;margin:0 auto;padding:0 28px}
+.header{padding:20px 0;border-bottom:1px solid var(--brd)}.h-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--txt)}.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal),var(--emerald));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-weight:800;font-size:16px;color:var(--bg)}.logo-text{font-family:var(--f);font-weight:700;font-size:16px}
+.nav-links{display:flex;gap:20px;align-items:center}.nav-links a{color:var(--txt2);text-decoration:none;font-size:13px;font-weight:500}.nav-links a:hover{color:var(--teal)}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.login-box{background:var(--bg2);border:1px solid var(--brd2);border-radius:20px;padding:40px;max-width:380px;width:100%;text-align:center}
+.login-box h2{font-family:var(--f);font-size:22px;font-weight:700;margin-bottom:6px}.login-box p{color:var(--txt2);font-size:13px;margin-bottom:24px}
+.fi{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--brd);border-radius:10px;color:var(--txt);font-size:14px;font-family:var(--f2);outline:none;margin-bottom:12px}.fi:focus{border-color:var(--teal)}
+.fb{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--emerald));font-family:var(--f);font-weight:600;font-size:14px;color:var(--bg);cursor:pointer}
+.dash{display:none;padding:32px 0 80px}
+.sg{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+.st{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:18px}
+.st-l{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--f);font-weight:600;margin-bottom:4px}
+.st-v{font-size:24px;font-weight:800;font-family:var(--mono)}
+.sec-t{font-family:var(--f);font-size:18px;font-weight:700;margin:24px 0 14px;display:flex;align-items:center;justify-content:space-between}
+.tw{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:12px 16px;font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--f);font-weight:600;border-bottom:1px solid var(--brd);background:var(--bg3)}
+td{padding:10px 16px;font-size:13px;border-bottom:1px solid var(--brd)}
+tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;font-family:var(--f)}
+.tag-teal{color:var(--teal);background:var(--teal-d)}.tag-em{color:var(--emerald);background:rgba(52,211,153,.1)}
+.empty{text-align:center;padding:40px;color:var(--txt3);font-size:14px}
+.bs{padding:6px 14px;border-radius:8px;font-size:10px;font-weight:600;border:none;cursor:pointer;font-family:var(--f);transition:all .2s}
+.bs-send{background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-m)}.bs-send:hover{background:var(--teal-m)}
+.bs-sent{background:var(--bg3);color:var(--txt3);cursor:default}
+.bs-fail{background:var(--ro-d);color:var(--rose);border:1px solid rgba(251,113,133,.2)}
+.btn-bulk{padding:10px 20px;border-radius:10px;font-size:12px;font-weight:600;border:none;cursor:pointer;font-family:var(--f);background:linear-gradient(135deg,var(--teal),var(--emerald));color:var(--bg)}
+.btn-prev{padding:10px 20px;border-radius:10px;font-size:12px;font-weight:600;border:1px solid var(--brd2);cursor:pointer;font-family:var(--f);background:var(--bg3);color:var(--txt2)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,15,26,.9);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;visibility:hidden;transition:all .3s}
+.modal-bg.open{opacity:1;visibility:visible}
+.modal-box{background:var(--bg2);border:1px solid var(--brd2);border-radius:20px;padding:28px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:12px;right:12px;background:var(--bg3);border:1px solid var(--brd);color:var(--txt2);cursor:pointer;padding:8px;border-radius:8px;font-size:14px;line-height:1}
+.ep{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:20px;margin-top:16px;font-size:13px;line-height:1.7;color:var(--txt2)}
+.ep h3{color:var(--txt);font-family:var(--f);font-size:16px;margin-bottom:8px}.ep h4{color:var(--teal);font-family:var(--f);font-size:13px;margin:14px 0 6px}.ep strong{color:var(--txt)}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--bg2);border:1px solid var(--teal-m);border-radius:12px;padding:12px 20px;font-size:13px;color:var(--teal);font-family:var(--f);z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:768px){.sg{grid-template-columns:repeat(2,1fr)}.tw{overflow-x:auto}table{min-width:700px}}
+</style>
+</head>
+<body>
+<div class="header"><div class="container"><div class="h-inner"><a href="/" class="logo"><div class="logo-mark">V</div><span class="logo-text">VitalWealth</span></a><div class="nav-links"><a href="/analytics.html">Analytics</a><a href="/feedback-admin.html">Feedback</a><a href="/" id="logoutBtn" style="display:none" onclick="location.reload()">Logout</a></div></div></div></div>
+<div class="container">
+<div class="login-wrap" id="loginWrap">
+<div class="login-box"><h2>Admin Dashboard</h2><p>Enter password to view waitlist</p><input type="password" class="fi" id="pwInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"><button class="fb" onclick="doLogin()">Access Dashboard</button></div>
+</div>
+<div class="dash" id="dash">
+<div class="sg">
+<div class="st"><div class="st-l">Total Signups</div><div class="st-v" id="sTotal">-</div></div>
+<div class="st"><div class="st-l">Today</div><div class="st-v" id="sToday" style="color:var(--teal)">-</div></div>
+<div class="st"><div class="st-l">This Week</div><div class="st-v" id="sWeek" style="color:var(--violet)">-</div></div>
+<div class="st"><div class="st-l">Emails Sent</div><div class="st-v" id="sSent" style="color:var(--emerald)">-</div></div>
+<div class="st"><div class="st-l">Spots Left</div><div class="st-v" id="sSpots" style="color:var(--amber)">-</div></div>
+</div>
+<div class="sec-t"><span>All Signups</span><div style="display:flex;gap:8px"><button class="btn-prev" onclick="openPreview()">Preview Email</button><button class="btn-bulk" id="bulkBtn" onclick="sendAllUnsent()">Send All Unsent</button></div></div>
+<div class="tw"><table><thead><tr><th>Email</th><th>Name</th><th>Interests</th><th>Date</th><th>Welcome Email</th></tr></thead><tbody id="tb"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody></table></div>
+</div>
+</div>
+
+<div class="modal-bg" id="pm" onclick="closePreview(event)">
+<div class="modal-box" onclick="event.stopPropagation()">
+<button class="modal-close" onclick="closePreview(event)">&#x2715;</button>
+<div style="font-family:var(--f);font-size:16px;font-weight:700;margin-bottom:4px">Welcome Email Preview</div>
+<div style="font-size:11px;color:var(--txt3);margin-bottom:12px">Sent automatically to each Alpha signup via Formspree</div>
+<div class="ep">
+<div style="font-size:11px;color:var(--txt3);margin-bottom:8px"><strong>Subject:</strong> Welcome to the Alpha 100 | VitalWealth</div>
+<h3>You're in.</h3>
+<p>You are one of the first 100 pioneers testing the <strong>"REM Harvest"</strong> and the <strong>"Dopamine Engine."</strong> We're bridging Solana trading with physical recovery.</p>
+<h4>What happens next:</h4>
+<p><strong>1. Qualification (48h):</strong> We'll verify your setup - exchange account + smartwatch (Garmin, Apple, Samsung).</p>
+<p><strong>2. First Build:</strong> You'll get an invite to our private feedback channel once the Bio-Correction module is ready.</p>
+<p><strong>3. The Goal:</strong> Prove that Wealth-Health synergy is a high-performance standard.</p>
+<h4>Alpha Terms of Participation:</h4>
+<p><strong>Non-Custodial:</strong> We use Read + Trade API only. We cannot withdraw your funds. Your keys, your crypto.</p>
+<p><strong>Experimental:</strong> This is an Alpha build. Features may change. Your feedback shapes what we build next.</p>
+<p><strong>Biometric Privacy:</strong> Health data (HR, HRV, sleep) is used only for Dopamine Engine triggers and REM Harvest unlocks. We never sell or share your data. AES-256 encrypted.</p>
+<p><strong>Biological Vault:</strong> The vault is a behavioral tool (soft lock), not a smart contract or on-chain lock. You can access your exchange directly at any time.</p>
+<p><strong>Kill Switch:</strong> You can pause or stop the bot at any time with sub-50ms latency.</p>
+<p><strong>Feedback Required:</strong> We expect active participation. Users who don't engage may lose Alpha access.</p>
+<p style="margin-top:14px"><strong>In the meantime:</strong><br>Try the demo: vitalwealth.app/demo.html<br>Give feedback: vitalwealth.app/feedback.html</p>
+<p style="margin-top:14px">Stay calm, stay profitable.<br><strong>- Ron, Founder of VitalWealth</strong></p>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SB='https://qmnfoqufgupixgugaiom.supabase.co';
+var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbmZvcXVmZ3VwaXhndWdhaW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMjc2MjcsImV4cCI6MjA4NjkwMzYyN30.gWJQeozdhUDRbKHTrJnsYywqsseyElnZjVV_o7tUERU';
+var FS='xojnwaeb';
+var PW='vitalwealth2025';
+var allData=[];
+
+function getSent(){try{return JSON.parse(localStorage.getItem('vw_sent')||'[]')}catch(e){return[]}}
+function markSent(e){var s=getSent();if(s.indexOf(e)<0){s.push(e);localStorage.setItem('vw_sent',JSON.stringify(s))}}
+function wasSent(e){return getSent().indexOf(e)>=0}
+
+function doLogin(){if(document.getElementById('pwInput').value===PW){document.getElementById('loginWrap').style.display='none';document.getElementById('dash').style.display='block';document.getElementById('logoutBtn').style.display='inline';loadData()}else{alert('Wrong password')}}
+
+function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3000)}
+
+function emailBody(name){
+return 'Welcome to the Alpha 100 | VitalWealth\n\n'+
+"You're in, "+(name||'Pioneer')+".\n\n"+
+'You are one of the first 100 pioneers testing the "REM Harvest" and the "Dopamine Engine." We are bridging Solana trading with physical recovery.\n\n'+
+'WHAT HAPPENS NEXT:\n'+
+'1. Qualification (48h): We will verify your setup - exchange account + smartwatch.\n'+
+'2. First Build: You will get an invite to our private feedback channel once Bio-Correction is ready.\n'+
+'3. The Goal: Prove that Wealth-Health synergy is a high-performance standard.\n\n'+
+'ALPHA TERMS:\n'+
+'- Non-Custodial: Read + Trade API only. We cannot withdraw your funds.\n'+
+'- Experimental: Alpha build. Features may change. Your feedback is essential.\n'+
+'- Privacy: Health data used only for Dopamine Engine and REM Harvest. Never sold. AES-256 encrypted.\n'+
+'- Vault: Behavioral soft lock, not a smart contract. You can access your exchange directly.\n'+
+'- Kill Switch: Pause or stop the bot any time with sub-50ms latency.\n'+
+'- Feedback Required: Active participation expected.\n\n'+
+'TRY NOW:\n'+
+'Demo: https://vitalwealth.app/demo.html\n'+
+'Feedback: https://vitalwealth.app/feedback.html\n\n'+
+'Stay calm, stay profitable.\n'+
+'-- Ron, Founder of VitalWealth\nhttps://vitalwealth.app'
+}
+
+async function sendEmail(email,name,btn){
+if(btn){btn.disabled=true;btn.textContent='Sending...';}
+try{
+var r=await fetch('https://formspree.io/f/'+FS,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,_replyto:email,_subject:'Welcome to the Alpha 100 | VitalWealth',name:name||'Pioneer',message:emailBody(name)})});
+if(r.ok){markSent(email);if(btn){btn.textContent='Sent';btn.className='bs bs-sent';btn.disabled=true;}showToast('Welcome email sent to '+email);updateSentCount();}
+else{throw new Error('fail')}
+}catch(e){if(btn){btn.disabled=false;btn.textContent='Retry';btn.className='bs bs-fail';}showToast('Failed: '+email)}}
+
+async function sendAllUnsent(){
+var unsent=allData.filter(function(d){return d.email&&!wasSent(d.email)});
+if(!unsent.length){showToast('All emails already sent!');return}
+if(!confirm('Send welcome email to '+unsent.length+' users?'))return;
+var b=document.getElementById('bulkBtn');b.disabled=true;
+for(var i=0;i<unsent.length;i++){
+b.textContent='Sending '+(i+1)+'/'+unsent.length+'...';
+await sendEmail(unsent[i].email,unsent[i].name);
+await new Promise(function(r){setTimeout(r,1200)});
+}
+b.disabled=false;b.textContent='Send All Unsent';
+loadData();
+}
+
+function updateSentCount(){var c=allData.filter(function(d){return d.email&&wasSent(d.email)}).length;document.getElementById('sSent').textContent=c+'/'+allData.length}
+function openPreview(){document.getElementById('pm').classList.add('open')}
+function closePreview(e){if(e&&e.target!==document.getElementById('pm')&&!e.target.closest('.modal-close'))return;document.getElementById('pm').classList.remove('open')}
+
+async function loadData(){
+try{
+var r=await fetch(SB+'/rest/v1/waitlist?select=*&order=signed_up_at.desc',{headers:{'apikey':SK,'Authorization':'Bearer '+SK}});
+allData=await r.json();
+var now=new Date();var today=now.toISOString().split('T')[0];
+var weekAgo=new Date(now-7*864e5).toISOString();
+var tc=allData.filter(function(d){return d.signed_up_at&&d.signed_up_at.startsWith(today)}).length;
+var wc=allData.filter(function(d){return d.signed_up_at&&d.signed_up_at>=weekAgo}).length;
+document.getElementById('sTotal').textContent=allData.length;
+document.getElementById('sToday').textContent=tc;
+document.getElementById('sWeek').textContent=wc;
+document.getElementById('sSpots').textContent=Math.max(0,100-allData.length);
+updateSentCount();
+var tb=document.getElementById('tb');
+if(!allData.length){tb.innerHTML='<tr><td colspan="5" class="empty">No signups yet</td></tr>';return}
+tb.innerHTML=allData.map(function(d){
+var dt=d.signed_up_at?new Date(d.signed_up_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'-';
+var ints=(d.interests||[]).map(function(i){return '<span class="tag tag-teal">'+i+'</span>'}).join(' ');
+var sent=wasSent(d.email);
+var esc_email=d.email.replace(/'/g,"\\'");
+var esc_name=(d.name||'').replace(/'/g,"\\'");
+var ebtn=sent?'<button class="bs bs-sent" disabled>Sent</button>':'<button class="bs bs-send" onclick="sendEmail(\''+esc_email+'\',\''+esc_name+'\',this)">Send</button>';
+return '<tr><td style="font-family:var(--mono);font-size:11px">'+d.email+'</td><td>'+(d.name||'-')+'</td><td>'+ints+'</td><td style="color:var(--txt3);font-size:11px;font-family:var(--mono)">'+dt+'</td><td>'+ebtn+'</td></tr>';
+}).join('');
+}catch(e){document.getElementById('tb').innerHTML='<tr><td colspan="5" class="empty">Error loading data</td></tr>'}}
+</script>
+</body>
+</html>
